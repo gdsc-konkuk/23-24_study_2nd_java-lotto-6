@@ -243,3 +243,28 @@ public class Lotto {
   - [ ] 3,4,5개, 5개와 보너스, 그리고 6개일치, 총 5개 종류의 당첨 내역 출력
 - [ ] 수익률 출력
   - [ ] ((당첨 금액) / (구입 금액)) * 100 을 계산한 값을 소수점 둘째자리에서 반올림해준 후 출력
+
+---  
+
+## 🎯 구현 클래스 목록  
+
+```text
+> src.main.java.lotto
+  > common
+    > exceptions
+      | InputException.java // 입력 예외 처리 클래스
+    > responses
+      | BaseResponseStatus.java // 기본 및 예외 문구 보관 클래스
+    | Constant.java // 상수 보관 클래스 
+  > src
+    > model
+      | Lotto.java // 로또 게임에 필요한 로직 보관 클래스
+    > view
+      | InputView.java // 입력 부분의 UI 로직 보관 클래스
+      | OutputView.java // 출력 부분의 UI 로직 보관 클래스
+    > controller
+      | LottoController.java // 로또 게임을 실행시켜주는 클래스
+      | IOController.java // 입출력 로직을 실행시켜주는 클래스 
+  > utils
+      | Conversion.java // 하나의 데이터 타입에서 다른 타입으로의 전환 담당 유틸 클래스
+```
