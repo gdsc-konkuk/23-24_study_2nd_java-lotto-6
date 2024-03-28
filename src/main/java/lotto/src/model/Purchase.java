@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static lotto.common.Constant.PRICE_DIVIDER_NUMBER;
+
 public class Purchase {
     private final List<List<Integer>> purchasedLottos;
 
@@ -24,7 +26,7 @@ public class Purchase {
     }
 
     private Integer getBuyCount(Integer price) {
-        return price / 1000;
+        return price / PRICE_DIVIDER_NUMBER;
     }
 
     public List<List<Integer>> getPurchasedLottos() {
