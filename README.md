@@ -252,14 +252,19 @@ public class Lotto {
   > common
     > exceptions
       | InputException.java // 입력 예외 처리 클래스
-      | CustomExceptionContext.java // 예외 문구 보관 Enum
+      | ExceptionContext.java // 예외 문구 보관 Enum
+    > requests
+      | RequestContext.java // 요청 문구 보관 Enum
     > responses
-      | CustomResponseContext.java // 기본 문구 보관 Enum
+      | ResponseContext.java // 응답 문구 보관 Enum
     | Constant.java // 상수 보관 클래스
-    | ResponseContext.java // 메세지 Contenxt 관리 Interface
+    | MessageContext.java // 메세지 Context 관리 Interface
   > src
     > model
-      | Lotto.java // 로또 게임에 필요한 로직 보관 클래스
+      | Bonus.java // 보너스 번호 클래스
+      | Lotto.java // 당첨 번호 클래스
+      | Purchase.java // 로또 구매 클래스
+      | Result.java // 로또 결과 클래스
     > view
       | InputView.java // 입력 부분의 UI 로직 보관 클래스
       | OutputView.java // 출력 부분의 UI 로직 보관 클래스
