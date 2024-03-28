@@ -7,10 +7,10 @@ public enum LottoInfo {
     FOURTH_WINNER(1, "4개 일치 (50,000원)", 50000),
     FIFTH_WINNER(0,"3개 일치 (5,000원)", 5000);
 
-    private final int index;
+    private final Integer index;
     private final String info;
-    private final int winningAmount;
-    LottoInfo(int index, String info, int winningAmount) {
+    private final Integer winningAmount;
+    LottoInfo(Integer index, String info, Integer winningAmount) {
         this.index = index;
         this.info = info;
         this.winningAmount = winningAmount;
@@ -20,11 +20,11 @@ public enum LottoInfo {
         return info;
     }
 
-    public int getWinningAmount() {
+    public Integer getWinningAmount() {
         return winningAmount;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
