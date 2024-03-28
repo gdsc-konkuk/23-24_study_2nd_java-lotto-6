@@ -3,20 +3,32 @@ package lotto.common.exceptions;
 import static lotto.common.exceptions.ExceptionContext.*;
 
 public class InputException {
-    public static void validatePriceInput(Integer price) {
-        checkInputPriceRange(price);
-        checkInputPriceDivision(price);
+    public static void validatePriceInput(Integer input) {
+        checkInputPriceRange(input);
+        checkInputPriceDivision(input);
     }
 
-    private static void checkInputPriceRange(Integer price) {
-        if (price <= 0) {
-            throw new IllegalArgumentException(PRICE_NOT_POSITIVE_MESSAGE.getMessage());
+    public static void validateWinningNumberInput(String input) {
+        checkInputCommaDivided(input);
+    }
+
+    private static void checkInputPriceRange(Integer input) {
+        if (input <= 0) {
+            throw new IllegalArgumentException(PRICE_NOT_POSITIVE.getMessage());
         }
     }
 
-    private static void checkInputPriceDivision(Integer price) {
-        if (price % 1000 != 0) {
+    private static void checkInputPriceDivision(Integer input) {
+        if (input % 1000 != 0) {
             throw new IllegalArgumentException(PRICE_NOT_DIVIDED_BY_THOUSAND.getMessage());
+        }
+    }
+
+    private static void checkInputCommaDivided(String input) {
+        String[] parts = input.split(",");
+
+        if (parts.length == 0) {
+            throw new IllegalArgumentException(NUMBER_NOT_SPLIT_BY_COMMA.getMessage());
         }
     }
 

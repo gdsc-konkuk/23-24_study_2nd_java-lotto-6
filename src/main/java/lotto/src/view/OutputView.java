@@ -2,11 +2,10 @@ package lotto.src.view;
 
 import java.util.List;
 
-import static lotto.common.responses.ResponseContext.PURCHASED_LOTTO_MESSAGE;
-
+import static lotto.common.responses.ResponseContext.*;
 public class OutputView {
     public void purchasedLottosOutput(List<List<Integer>> lottos) {
-        System.out.println(lottos.size() + PURCHASED_LOTTO_MESSAGE.getMessage());
+        System.out.println(lottos.size() + PURCHASED_LOTTO.getMessage());
         printPurchasedLottos(lottos);
     }
 

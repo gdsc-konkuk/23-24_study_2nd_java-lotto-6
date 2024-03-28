@@ -2,14 +2,22 @@ package lotto.src.view;
 
 import camp.nextstep.edu.missionutils.Console;
 
-import static lotto.common.requests.RequestContext.PRICE_REQUEST_MESSAGE;
+import java.util.List;
+
+import static lotto.common.requests.RequestContext.*;
 
 public class InputView {
 
-    public Integer priceInput() {
-        System.out.println(PRICE_REQUEST_MESSAGE.getMessage());
-        String price = Console.readLine();
-        return Integer.parseInt(price);
+    public String priceInput() {
+        System.out.println(PRICE_REQUEST.getMessage());
+        String priceStr = Console.readLine();
+        return priceStr;
+    }
+
+    public String winningNumberInput() {
+        System.out.println(WINNING_NUMBER_REQUEST.getMessage());
+        String winningNumberStr = Console.readLine();
+        return winningNumberStr;
     }
 
 }
