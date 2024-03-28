@@ -8,6 +8,7 @@ public class LottoController {
     }
 
     public void lottoStart() {
-        ioController.lottoPriceInput();
+        Integer price = ioController.lottoPriceInput();
+        ioController.purchaseLotto(price);
     }
 }

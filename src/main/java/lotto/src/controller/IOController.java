@@ -1,8 +1,11 @@
 package lotto.src.controller;
 
 import lotto.common.exceptions.InputException;
+import lotto.src.model.Purchase;
 import lotto.src.view.InputView;
 import lotto.src.view.OutputView;
+
+import java.util.List;
 
 public class IOController {
     private final InputView inputView;
@@ -26,6 +29,12 @@ public class IOController {
             }
         }
         return price;
+    }
+
+    public void purchaseLotto(Integer price) {
+        Purchase purchase = new Purchase(price);
+        List<List<Integer>> purchasedLottos = purchase.getPurchasedLottos();
+        outputView.purchasedLottosOutput(purchasedLottos);
     }
 
 }
