@@ -1,6 +1,7 @@
 package lotto.src.controller;
 
 import lotto.common.exceptions.InputException;
+import lotto.src.model.Bonus;
 import lotto.src.model.Lotto;
 import lotto.src.model.Purchase;
 import lotto.src.view.InputView;
@@ -35,10 +36,11 @@ public class IOController {
         return price;
     }
 
-    public void purchaseLotto(Integer price) {
+    public List<List<Integer>> purchaseLotto(Integer price) {
         Purchase purchase = new Purchase(price);
         List<List<Integer>> purchasedLottos = purchase.getPurchasedLottos();
         outputView.purchasedLottosOutput(purchasedLottos);
+        return purchasedLottos;
     }
 
     public List<Integer> getWinningNumber() {
@@ -60,5 +62,21 @@ public class IOController {
             }
         }
         return lotto.getNumbers();
+    }
+
+    public Integer getBonusNumber() {
+        Bonus bonus;
+        while (true) {
+            try {
+                String bonusNumberStr = inputView.bonusNumberInput();
+                Integer bonusNumber = Integer.parseInt(bonusNumberStr);
+                InputException.validateBonusNumberInput(bonusNumber);
+                bonus = new Bonus(bonusNumber);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return bonus.getBonusNumber();
     }
 }

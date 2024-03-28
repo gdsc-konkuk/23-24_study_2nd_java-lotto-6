@@ -7,6 +7,7 @@ public class OutputView {
     public void purchasedLottosOutput(List<List<Integer>> lottos) {
         System.out.println(lottos.size() + PURCHASED_LOTTO.getMessage());
         printPurchasedLottos(lottos);
+        System.out.println();
     }
 
     private void printPurchasedLottos(List<List<Integer>> lottos) {

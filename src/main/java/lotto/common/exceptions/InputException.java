@@ -12,6 +12,10 @@ public class InputException {
         checkInputCommaDivided(input);
     }
 
+    public static void validateBonusNumberInput(Integer input) {
+        checkInputRange(input);
+    }
+
     private static void checkInputPriceRange(Integer input) {
         if (input <= 0) {
             throw new IllegalArgumentException(PRICE_NOT_POSITIVE.getMessage());
@@ -29,6 +33,12 @@ public class InputException {
 
         if (parts.length == 0) {
             throw new IllegalArgumentException(NUMBER_NOT_SPLIT_BY_COMMA.getMessage());
+        }
+    }
+
+    private static void checkInputRange(Integer input) {
+        if (input < 1 || input > 45) {
+            throw new IllegalArgumentException(NUMBER_RANGE_ERROR.getMessage());
         }
     }
 
