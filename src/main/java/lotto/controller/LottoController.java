@@ -3,7 +3,7 @@ package lotto.controller;
 import lotto.model.Person;
 import lotto.model.Shop;
 import lotto.model.lotto.LottoResults;
-import lotto.model.lotto.LottoWinRequirements;
+import lotto.model.lotto.LottoWinNumbers;
 import lotto.util.Calculator;
 import lotto.util.Log;
 import lotto.view.InputView;
@@ -24,7 +24,7 @@ public class LottoController {
 
     public void process() {
         buyLotto();
-        inputWinRequirements();
+        inputWinNumbers();
         showResults();
     }
 
@@ -34,14 +34,14 @@ public class LottoController {
         ioController.showLotto(person.getLottoesToString());
     }
 
-    private void inputWinRequirements() {
+    private void inputWinNumbers() {
         try {
-            LottoWinRequirements requirements =
-                    LottoWinRequirements.of(ioController.winningNumberInput(), ioController.bonusNumberInput());
-            this.lottoResults = LottoResults.of(requirements);
+            LottoWinNumbers winNumbers =
+                    LottoWinNumbers.of(ioController.winningNumberInput(), ioController.bonusNumberInput());
+            this.lottoResults = LottoResults.of(winNumbers);
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
-            inputWinRequirements();
+            inputWinNumbers();
         }
     }
 

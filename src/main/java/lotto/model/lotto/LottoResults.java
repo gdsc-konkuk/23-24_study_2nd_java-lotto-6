@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Set;
 
 public class LottoResults {
-    private final LottoWinRequirements requirements;
+    private final LottoWinNumbers requirements;
     private final List<Integer> resultAmount;
     private final List<Integer> winList;
 
-    private LottoResults(LottoWinRequirements requirements) {
+    private LottoResults(LottoWinNumbers requirements) {
         this.requirements = requirements;
         this.resultAmount = new ArrayList<>();
         this.winList = new ArrayList<>(List.of(0, 0, 0, 0, 0));
     }
 
-    public static LottoResults of(LottoWinRequirements requirements) {
+    public static LottoResults of(LottoWinNumbers requirements) {
         return new LottoResults(requirements);
     }
 
@@ -27,9 +27,9 @@ public class LottoResults {
         calculateWinningResult();
     }
 
-    public int getTotalWinAmount() {
+    public Integer getTotalWinAmount() {
         int sum =0;
-        for (int amount : resultAmount) {
+        for (Integer amount : resultAmount) {
             sum = sum + amount;
         }
         return sum;
@@ -45,21 +45,21 @@ public class LottoResults {
         }
     }
 
-    private void calculateResult(int size, Lotto lotto) {
-        if (size == 3) {
+    private void calculateResult(Integer size, Lotto lotto) {
+        if (size.equals(3)) {
             resultAmount.add(LottoInfo.FIFTH_WINNER.getWinningAmount());
         }
-        if (size == 4) {
+        if (size.equals(4)) {
             resultAmount.add(LottoInfo.FOURTH_WINNER.getWinningAmount());
         }
-        if (size == 5) {
+        if (size.equals(5)) {
             resultAmount.add(ifMatchNumberFive(lotto));
         }
-        if (size == 6) {
+        if (size.equals(6)) {
             resultAmount.add(LottoInfo.FIRST_WINNER.getWinningAmount());
         }
     }
-    private int ifMatchNumberFive(Lotto lotto) {
+    private Integer ifMatchNumberFive(Lotto lotto) {
         List<Integer> lottoNumber = lotto.getNumbers();
         if (lottoNumber.contains(requirements.getBonusNumber())) {
             return LottoInfo.SECOND_WINNER.getWinningAmount();
@@ -73,9 +73,9 @@ public class LottoResults {
         }
     }
 
-    private void calculateWinningList(int amount) {
+    private void calculateWinningList(Integer amount) {
         for (LottoInfo lottoInfo : LottoInfo.values()) {
-            if (amount == lottoInfo.getWinningAmount()) {
+            if (amount.equals(lottoInfo.getWinningAmount())) {
                 int index = lottoInfo.getIndex();
                 winList.set(index, winList.get(index) + 1);
             }

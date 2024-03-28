@@ -4,19 +4,19 @@ import lotto.util.Log;
 
 import java.util.List;
 
-public class LottoWinRequirements {
+public class LottoWinNumbers {
     private final List<Integer> winningNumber;
     private final Integer bonusNumber;
     private static final Log log = new Log();
 
-    private LottoWinRequirements(List<Integer> winningNumber, Integer bonusNumber) {
+    private LottoWinNumbers(List<Integer> winningNumber, Integer bonusNumber) {
         checkDuplicateNumbers(winningNumber, bonusNumber);
         this.winningNumber = winningNumber;
         this.bonusNumber = bonusNumber;
     }
 
-    public static LottoWinRequirements of(List<Integer> winningNumber, Integer bonusNumber) {
-        return new LottoWinRequirements(winningNumber, bonusNumber);
+    public static LottoWinNumbers of(List<Integer> winningNumber, Integer bonusNumber) {
+        return new LottoWinNumbers(winningNumber, bonusNumber);
     }
 
     private static void checkDuplicateNumbers(List<Integer> winningNumber, Integer bonusNumber) {
@@ -30,7 +30,7 @@ public class LottoWinRequirements {
         return winningNumber;
     }
 
-    public int getBonusNumber() {
+    public Integer getBonusNumber() {
         return bonusNumber;
     }
 }

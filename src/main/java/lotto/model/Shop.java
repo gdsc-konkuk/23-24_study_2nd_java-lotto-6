@@ -1,7 +1,7 @@
 package lotto.model;
 
 import lotto.model.lotto.Lotto;
-import lotto.model.lotto.LottoGenerator;
+import lotto.model.lotto.LottoMachine;
 import lotto.util.Log;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class Shop {
     private PaperBag wrapPaperBag(){
         List<Lotto> lottoes = new ArrayList<>();
         for (int i = 0; i < purchaseNumber; i++) {
-            Lotto lotto = LottoGenerator.generateLotto();
+            Lotto lotto = LottoMachine.generateLotto();
             lottoes.add(lotto);
         }
         return PaperBag.of(lottoes);
