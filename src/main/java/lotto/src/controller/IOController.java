@@ -53,7 +53,6 @@ public class IOController {
         while (true) {
             try {
                 String winningNumber = inputView.winningNumberInput();
-                InputException.validateWinningNumberInput(winningNumber);
                 ArrayList<Integer> winningNumbers = Conversion.stringWithCommaToArrayList(winningNumber);
                 lotto = new Lotto(winningNumbers);
                 break;
@@ -78,5 +77,9 @@ public class IOController {
             }
         }
         return bonus.getBonusNumber();
+    }
+
+    public void getLottoResult(List<Integer> result, Double profitRate) {
+        outputView.getLottoResultOutput(result, profitRate);
     }
 }

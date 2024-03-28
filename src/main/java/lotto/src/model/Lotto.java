@@ -1,28 +1,20 @@
 package lotto.src.model;
 
+import lotto.common.Constant;
+import lotto.common.exceptions.InputException;
+
 import java.util.List;
 
+import static lotto.common.Constant.*;
 import static lotto.common.exceptions.ExceptionContext.*;
 
 public class Lotto {
     private final List<Integer> numbers;
 
     public Lotto(List<Integer> numbers) {
-        validate(numbers);
+        InputException.validateWinningNumbers(numbers);
         this.numbers = numbers;
     }
-
-    private void validate(List<Integer> numbers) {
-        if (numbers.size() != 6) {
-            throw new IllegalArgumentException(NUMBER_LIST_SIZE_ERROR.getMessage());
-        }
-        for (Integer number : numbers) {
-            if (number < 1 || number > 45) {
-                throw new IllegalArgumentException(NUMBER_RANGE_ERROR.getMessage());
-            }
-        }
-    }
-
     public List<Integer> getNumbers() {
         return numbers;
     }
