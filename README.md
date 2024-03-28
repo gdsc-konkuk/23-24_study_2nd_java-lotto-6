@@ -226,4 +226,47 @@ public class Lotto {
 - **기능을 구현하기 전 `docs/README.md`에 구현할 기능 목록을 정리**해 추가한다.
 - **Git의 커밋 단위는 앞 단계에서 `docs/README.md`에 정리한 기능 목록 단위**로 추가한다.
     - [커밋 메시지 컨벤션](https://gist.github.com/stephenparish/9941e89d80e2bc58a153) 가이드를 참고해 커밋 메시지를 작성한다.
-- 과제 진행 및 제출 방법은 [프리코스 과제 제출](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse) 문서를 참고한다.
+- 과제 진행 및 제출 방법은 [프리코스 과제 제출](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse) 문서를 참고한다. 
+
+---  
+
+## 🎯 구현 기능 목록  
+
+- [ ] 구입 금액 입력  
+  - [ ] 1000원 단위로 나누어 떨어지는지 체크. 만일 나누어 떨어지지 않는 경우, 예외 처리   
+- [ ] 당첨 번호 및 보너스 번호 입력
+  - [ ] 당첨 번호 : 6개의 숫자가 쉼표를 기준으로 구분된 형태로 입력
+  - [ ] 보너스 번호 : 1개의 단일 숫자 입력
+- [ ] 발행한 로또 수량 및 번호 출력
+  - [ ] 로또 번호는 오름차순으로 정렬 후 출력
+- [ ] 당첨 내역 출력
+  - [ ] 3,4,5개, 5개와 보너스, 그리고 6개일치, 총 5개 종류의 당첨 내역 출력
+- [ ] 수익률 출력
+  - [ ] ((당첨 금액) / (구입 금액)) * 100 을 계산한 값을 소수점 둘째자리에서 반올림해준 후 출력
+
+---  
+
+## 🎯 구현 클래스 목록  
+
+```text
+> src.main.java.lotto
+  > common
+    > exceptions
+      | InputException.java // 입력 예외 처리 클래스
+      | CustomExceptionContext.java // 예외 문구 보관 Enum
+    > responses
+      | CustomResponseContext.java // 기본 문구 보관 Enum
+    | Constant.java // 상수 보관 클래스
+    | ResponseContext.java // 메세지 Contenxt 관리 Interface
+  > src
+    > model
+      | Lotto.java // 로또 게임에 필요한 로직 보관 클래스
+    > view
+      | InputView.java // 입력 부분의 UI 로직 보관 클래스
+      | OutputView.java // 출력 부분의 UI 로직 보관 클래스
+    > controller
+      | LottoController.java // 로또 게임을 실행시켜주는 클래스
+      | IOController.java // 입출력 로직을 실행시켜주는 클래스 
+  > utils
+      | Conversion.java // 하나의 데이터 타입에서 다른 타입으로의 전환 담당 유틸 클래스
+```
