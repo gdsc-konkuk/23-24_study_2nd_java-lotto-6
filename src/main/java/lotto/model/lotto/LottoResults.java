@@ -18,8 +18,8 @@ public class LottoResults {
         this.winList = new ArrayList<>(List.of(0, 0, 0, 0, 0));
     }
 
-    public static LottoResults of(LottoWinNumbers requirements) {
-        return new LottoResults(requirements);
+    public static LottoResults of(LottoWinNumbers winNumbers) {
+        return new LottoResults(winNumbers);
     }
 
     public void calculateResult(PaperBag paperBag) {
