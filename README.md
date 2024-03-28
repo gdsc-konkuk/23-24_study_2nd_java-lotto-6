@@ -257,7 +257,7 @@ public class Lotto {
     > responses
       | CustomResponseContext.java // 기본 문구 보관 Enum
     | Constant.java // 상수 보관 클래스
-    | ResponseContext.java // 메세지 Contenxt 관리 interface
+    | ResponseContext.java // 메세지 Contenxt 관리 Interface
   > src
     > model
       | Lotto.java // 로또 게임에 필요한 로직 보관 클래스
