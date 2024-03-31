@@ -14,6 +14,7 @@ public class InputException {
     public static void validatePriceInput(String input) {
         checkIsNumeric(input);
     }
+
     public static void validatePriceInput(Integer input) {
         checkInputPriceRange(input);
         checkInputPriceDivision(input);

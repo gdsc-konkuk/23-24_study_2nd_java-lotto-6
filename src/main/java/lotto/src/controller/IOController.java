@@ -29,7 +29,6 @@ public class IOController {
                 String priceStr = inputView.priceInput();
                 InputException.validatePriceInput(priceStr);
                 price = Integer.parseInt(priceStr);
-                InputException.validatePriceInput(Integer.parseInt(priceStr));
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());

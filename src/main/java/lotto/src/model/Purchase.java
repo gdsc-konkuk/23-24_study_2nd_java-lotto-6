@@ -1,6 +1,7 @@
 package lotto.src.model;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import lotto.common.exceptions.InputException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +15,7 @@ public class Purchase {
 
     public Purchase(Integer price) {
         purchasedLottos = new ArrayList<>();
+        InputException.validatePriceInput(price);
         buyLotto(price);
     }
 
