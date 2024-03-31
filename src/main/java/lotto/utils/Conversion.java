@@ -1,5 +1,6 @@
 package lotto.utils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -14,5 +15,10 @@ public class Conversion {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());
         }
+    }
+
+    public static String integerToStringPriceWithComma(Integer price) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(price);
     }
 }

@@ -1,5 +1,7 @@
 package lotto.src.view;
 
+import lotto.utils.Conversion;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +31,14 @@ public class OutputView {
         System.out.println("---");
         for (int i = 3; i <= 7; i++) {
             if (i == 6) {
-                System.out.println((i - 1) + "개 일치, 보너스 볼 일치 (" + price.get(i) + "원) - " + result.get(i) + "개");
+                System.out.println((i - 1) + "개 일치, 보너스 볼 일치 (" + Conversion.integerToStringPriceWithComma(price.get(i)) + "원) - " + result.get(i) + "개");
                 continue;
             }
             if (i == 7) {
-                System.out.println((i - 1) + "개 일치 (" + price.get(i) + "원) - " + result.get(i) + "개");
+                System.out.println((i - 1) + "개 일치 (" + Conversion.integerToStringPriceWithComma(price.get(i)) + "원) - " + result.get(i) + "개");
                 continue;
             }
-            System.out.println(i + "개 일치 (" + price.get(i) + "원) - " + result.get(i) + "개");
+            System.out.println(i + "개 일치 (" + Conversion.integerToStringPriceWithComma(price.get(i)) + "원) - " + result.get(i) + "개");
         }
         System.out.println("총 수익률은 " + profitRate + "%입니다.");
     }
