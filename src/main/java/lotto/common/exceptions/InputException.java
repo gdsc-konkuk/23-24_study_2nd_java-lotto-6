@@ -1,10 +1,10 @@
 package lotto.common.exceptions;
 
 import lotto.common.Constant;
+import lotto.utils.Conversion;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static lotto.common.Constant.*;
 import static lotto.common.exceptions.ExceptionContext.*;
@@ -13,28 +13,32 @@ public class InputException {
 
     public static void validatePriceInput(String input) {
         checkIsNumeric(input);
+        Integer inputInteger = Integer.parseInt(input);
+        checkInputPriceRange(inputInteger);
+        checkInputPriceDivision(inputInteger);
     }
 
-    public static void validatePriceInput(Integer input) {
-        checkInputPriceRange(input);
-        checkInputPriceDivision(input);
+    public static void validateWinningNumbers(String input) {
+        checkInputHasWrongType(input);
+        ArrayList<Integer> inputList = Conversion.stringWithCommaToArrayList(input);
+        checkInputCommaDivided(inputList);
+        checkInputSize(inputList);
+        checkInputNumberRange(inputList);
+        checkInputNumberDuplicate(inputList);
     }
 
     public static void validateWinningNumbers(List<Integer> input) {
-        checkIsNumeric(input);
         checkInputCommaDivided(input);
         checkInputSize(input);
         checkInputNumberRange(input);
         checkInputNumberDuplicate(input);
     }
 
-    public static void validateBonusNumberInput(String input) {
+    public static void validateBonusNumberInput(List<Integer> winningNumber, String input) {
         checkIsNumeric(input);
-    }
-
-    public static void validateBonusNumberInput(List<Integer> winningNumber, Integer input) {
-        checkInputRange(input);
-        checkInputDuplicateNumber(winningNumber, input);
+        Integer inputNum = Integer.parseInt(input);
+        checkInputRange(inputNum);
+        checkInputDuplicateNumber(winningNumber, inputNum);
     }
 
     private static void checkIsNumeric(String input) {
@@ -45,10 +49,12 @@ public class InputException {
         }
     }
 
-    private static void checkIsNumeric(List<Integer> input) {
+    private static void checkInputHasWrongType(String input) {
+        ArrayList<String> inputList = Arrays.stream(input.split(","))
+                .collect(Collectors.toCollection(ArrayList::new));
         try {
-            for (Integer num : input) {
-                int number = Integer.parseInt(String.valueOf(num));
+            for (String num : inputList) {
+                int number = Integer.parseInt(num);
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());

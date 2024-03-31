@@ -22,7 +22,7 @@ public class IOController {
         this.outputView = new OutputView();
     }
 
-    public Integer lottoPriceInput() {
+    public Integer purchasePriceInput() {
         Integer price;
         while(true) {
             try {
@@ -42,46 +42,34 @@ public class IOController {
         return purchasedLottos;
     }
 
-    public List<Integer> getWinningNumber() {
-        List<Integer> numbers = winningNumberInput();
-        return numbers;
-    }
-
-    public Integer getBonusNumber(List<Integer> winningNumber) {
-        Integer number = bonusNumberInput(winningNumber);
-        return number;
-    }
-
-    private List<Integer> winningNumberInput() {
-        Lotto lotto;
+    public List<Integer> winningNumberInput() {
+        List<Integer> winningNumbers;
         while (true) {
             try {
                 String winningNumber = inputView.winningNumberInput();
-                ArrayList<Integer> winningNumbers = Conversion.stringWithCommaToArrayList(winningNumber);
-                InputException.validateWinningNumbers(Conversion.stringWithCommaToArrayList(winningNumber));
-                lotto = new Lotto(winningNumbers);
+                InputException.validateWinningNumbers(winningNumber);
+                winningNumbers = Conversion.stringWithCommaToArrayList(winningNumber);
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
-        return lotto.getNumbers();
+        return winningNumbers;
     }
 
     public Integer bonusNumberInput(List<Integer> winningNumber) {
-        Bonus bonus;
+        Integer bonusNumber;
         while (true) {
             try {
                 String bonusNumberStr = inputView.bonusNumberInput();
-                InputException.validateBonusNumberInput(bonusNumberStr);
-                InputException.validateBonusNumberInput(winningNumber, Integer.parseInt(bonusNumberStr));
-                bonus = new Bonus(Integer.parseInt(bonusNumberStr));
+                InputException.validateBonusNumberInput(winningNumber, bonusNumberStr);
+                bonusNumber = Integer.parseInt(bonusNumberStr);
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
-        return bonus.getBonusNumber();
+        return bonusNumber;
     }
 
     public void showLottoResult(Map<Integer, Integer> price, Map<Integer, Integer> result, Double profitRate) {

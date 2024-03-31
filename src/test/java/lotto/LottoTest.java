@@ -2,6 +2,7 @@ package lotto;
 
 import lotto.common.exceptions.InputException;
 import lotto.src.controller.IOController;
+import lotto.src.model.Bonus;
 import lotto.src.model.Lotto;
 import lotto.src.model.Purchase;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +43,7 @@ class LottoTest {
         }
     }
 
-    @DisplayName("로또 번호 입력")
+    @DisplayName("로또 당첨 번호 입력")
     @Nested
     class LottoInput {
         @DisplayName("로또 번호가 정수형 숫자가 아니면 예외가 발생한다.")
@@ -80,5 +81,30 @@ class LottoTest {
         }
     }
 
+    @DisplayName("보너스 번호 입력")
+    @Nested
+    class bonusInput {
+
+        @DisplayName("정수형 숫자를 입력하지 않는 경우 예외가 발생한다.")
+        @Test
+        void createBonusByWrongType() {
+            assertThatThrownBy(() -> new Bonus(List.of(1, 2, 3, 4, 5, 6), "a"))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @DisplayName("보너스 번호가 1부터 45 사이의 숫자가 아닌 경우 예외가 발생한다.")
+        @Test
+        void createBonusByWrongRange() {
+            assertThatThrownBy(() -> new Bonus(List.of(1, 2, 3, 4, 5, 6), "100"))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @DisplayName("당첨 번호와 일치하는 숫자일 경우 예외가 발생한다.")
+        @Test
+        void createBonusByDuplicateWithLotto() {
+            assertThatThrownBy(() -> new Bonus(List.of(1, 2, 3, 4, 5, 6), "6"))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+    }
 
 }
