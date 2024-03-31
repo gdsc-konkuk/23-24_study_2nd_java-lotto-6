@@ -11,12 +11,10 @@ import java.util.List;
 import static lotto.common.Constant.PRICE_DIVIDER_NUMBER;
 
 public class Purchase {
-    private final Integer buyPrice;
     private final List<List<Integer>> purchasedLottos;
 
     public Purchase(Integer price) {
         InputException.validatePriceInput(String.valueOf(price));
-        buyPrice = price;
         purchasedLottos = new ArrayList<>();
         buyLotto(price);
     }
@@ -32,11 +30,6 @@ public class Purchase {
 
     private Integer getBuyCount(Integer price) {
         return price / PRICE_DIVIDER_NUMBER;
-    }
-
-
-    public Integer getBuyPrice() {
-        return buyPrice;
     }
 
     public List<List<Integer>> getPurchasedLottos() {
