@@ -3,6 +3,7 @@ package lotto.src.model;
 import camp.nextstep.edu.missionutils.Randoms;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class Purchase {
     private void buyLotto(Integer price) {
         int buyCount = getBuyCount(price);
         for (int i = 0; i < buyCount; i++) {
-            List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
-            numbers.sort(Comparator.naturalOrder());
+            List<Integer> numbers = new ArrayList<>(Randoms.pickUniqueNumbersInRange(1, 45, 6));
+            Collections.sort(numbers);
             this.purchasedLottos.add(numbers);
         }
     }
