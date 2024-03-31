@@ -1,6 +1,7 @@
 package lotto.src.view;
 
 import java.util.List;
+import java.util.Map;
 
 import static lotto.common.responses.ResponseContext.*;
 public class OutputView {
@@ -22,4 +23,22 @@ public class OutputView {
             System.out.println("]");
         }
     }
+
+    public void getLottoResultOutput(Map<Integer, Integer> price, Map<Integer, Integer> result, Double profitRate) {
+        System.out.println(LOTTO_RESULT.getMessage());
+        System.out.println("---");
+        for (int i = 3; i <= 7; i++) {
+            if (i == 6) {
+                System.out.println((i - 1) + "개 일치, 보너스 볼 일치 (" + price.get(i) + "원) - " + result.get(i) + "개");
+                continue;
+            }
+            if (i == 7) {
+                System.out.println((i - 1) + "개 일치 (" + price.get(i) + "원) - " + result.get(i) + "개");
+                continue;
+            }
+            System.out.println(i + "개 일치 (" + price.get(i) + "원) - " + result.get(i) + "개");
+        }
+        System.out.println("총 수익률은 " + profitRate + "%입니다.");
+    }
+
 }
