@@ -10,6 +10,10 @@ import static lotto.common.Constant.*;
 import static lotto.common.exceptions.ExceptionContext.*;
 
 public class InputException {
+
+    public static void validatePriceInput(String input) {
+        checkIsNumeric(input);
+    }
     public static void validatePriceInput(Integer input) {
         checkInputPriceRange(input);
         checkInputPriceDivision(input);
@@ -22,8 +26,21 @@ public class InputException {
         checkInputNumberDuplicate(input);
     }
 
-    public static void validateBonusNumberInput(Integer input) {
+    public static void validateBonusNumberInput(String input) {
+        checkIsNumeric(input);
+    }
+
+    public static void validateBonusNumberInput(List<Integer> winningNumber, Integer input) {
         checkInputRange(input);
+        checkInputDuplicateNumber(winningNumber, input);
+    }
+
+    private static void checkIsNumeric(String input) {
+        try {
+            int number = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());
+        }
     }
 
     private static void checkInputPriceRange(Integer input) {
@@ -65,6 +82,12 @@ public class InputException {
     private static void checkInputNumberDuplicate(List<Integer> input) {
         if (hasDuplicates(input)) {
             throw new IllegalArgumentException(NUMBER_DUPLICATE_ERROR.getMessage());
+        }
+    }
+
+    private static void checkInputDuplicateNumber(List<Integer> winningNumber, Integer input) {
+        if (winningNumber.contains(input)) {
+            throw new IllegalArgumentException(BONUS_NUMBER_DUPLICATE_ERROR.getMessage());
         }
     }
 
