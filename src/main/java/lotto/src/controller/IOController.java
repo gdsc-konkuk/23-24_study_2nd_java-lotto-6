@@ -26,6 +26,7 @@ public class IOController {
         while(true) {
             try {
                 String priceStr = inputView.priceInput();
+                InputException.validatePriceInput(priceStr);
                 price = Integer.parseInt(priceStr);
                 InputException.validatePriceInput(price);
                 break;
@@ -36,9 +37,7 @@ public class IOController {
         return price;
     }
 
-    public List<List<Integer>> purchaseLotto(Integer price) {
-        Purchase purchase = new Purchase(price);
-        List<List<Integer>> purchasedLottos = purchase.getPurchasedLottos();
+    public List<List<Integer>> showPurchasedLotto(List<List<Integer>> purchasedLottos) {
         outputView.purchasedLottosOutput(purchasedLottos);
         return purchasedLottos;
     }
@@ -54,6 +53,7 @@ public class IOController {
             try {
                 String winningNumber = inputView.winningNumberInput();
                 ArrayList<Integer> winningNumbers = Conversion.stringWithCommaToArrayList(winningNumber);
+                InputException.validateWinningNumbers(winningNumbers);
                 lotto = new Lotto(winningNumbers);
                 break;
             } catch (IllegalArgumentException e) {
@@ -63,13 +63,14 @@ public class IOController {
         return lotto.getNumbers();
     }
 
-    public Integer getBonusNumber() {
+    public Integer bonusNumberInput(List<Integer> winningNumber) {
         Bonus bonus;
         while (true) {
             try {
                 String bonusNumberStr = inputView.bonusNumberInput();
+                InputException.validateBonusNumberInput(bonusNumberStr);
                 Integer bonusNumber = Integer.parseInt(bonusNumberStr);
-                InputException.validateBonusNumberInput(bonusNumber);
+                InputException.validateBonusNumberInput(winningNumber, bonusNumber);
                 bonus = new Bonus(bonusNumber);
                 break;
             } catch (IllegalArgumentException e) {
@@ -79,7 +80,7 @@ public class IOController {
         return bonus.getBonusNumber();
     }
 
-    public void getLottoResult(List<Integer> result, Double profitRate) {
+    public void showLottoResult(List<Integer> result, Double profitRate) {
         outputView.getLottoResultOutput(result, profitRate);
     }
 }
