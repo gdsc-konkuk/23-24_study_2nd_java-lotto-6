@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,8 +19,6 @@ class LottoTest {
     @DisplayName("구입 금액 입력")
     @Nested
     class priceInput {
-
-
 
         @DisplayName("정수형 숫자를 입력하지 않으면 예외가 발생한다.")
         @Test
@@ -46,10 +45,30 @@ class LottoTest {
     @DisplayName("로또 번호 입력")
     @Nested
     class LottoInput {
+        @DisplayName("로또 번호가 정수형 숫자가 아니면 예외가 발생한다.")
+        @Test
+        void createLottoByWrongType() {
+            assertThatThrownBy(() -> new Lotto(List.of(Integer.parseInt("a"), 2, 3, 4, 5, 6, 7)))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @DisplayName("로또 번호가 쉼표로 구분되어 있지 않은 경우 예외가 발생한다.")
+        @Test
+        void createLottoByWrongFormat() {
+            assertThatThrownBy(() -> new Lotto(List.of(1234567)))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
         @DisplayName("로또 번호의 개수가 6개가 넘어가면 예외가 발생한다.")
         @Test
         void createLottoByOverSize() {
             assertThatThrownBy(() -> new Lotto(List.of(1, 2, 3, 4, 5, 6, 7)))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @DisplayName("로또 번호가 1부터 45 사이의 숫자가 아니면 예외가 발생한다.")
+        @Test
+        void createLottoByWrongRange() {
+            assertThatThrownBy(() -> new Lotto(List.of(1, 2, 3, 4, 47, -1)))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 

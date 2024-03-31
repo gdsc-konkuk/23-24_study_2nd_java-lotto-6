@@ -21,6 +21,7 @@ public class InputException {
     }
 
     public static void validateWinningNumbers(List<Integer> input) {
+        checkIsNumeric(input);
         checkInputCommaDivided(input);
         checkInputSize(input);
         checkInputNumberRange(input);
@@ -39,6 +40,16 @@ public class InputException {
     private static void checkIsNumeric(String input) {
         try {
             int number = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());
+        }
+    }
+
+    private static void checkIsNumeric(List<Integer> input) {
+        try {
+            for (Integer num : input) {
+                int number = Integer.parseInt(String.valueOf(num));
+            }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());
         }
