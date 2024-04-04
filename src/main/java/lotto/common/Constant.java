@@ -16,4 +16,7 @@ public class Constant {
     public static final Integer WIN_LOTTO_FIVE_NUMBER_WITH_BONUS = 30000000;
     public static final Integer WIN_LOTTO_SIX_NUMBER = 2000000000;
 
+    // 메세지 로그
+    public static final String ERROR_LOG = "[ERROR]";
+
 }
