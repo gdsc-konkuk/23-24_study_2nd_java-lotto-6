@@ -8,13 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shop {
-    private final Integer purchaseAmount;
     private final Integer purchaseNumber;
     private static final Log log = new Log();
 
-    private Shop(Integer purchaseAmount) {
+    public Shop(Integer purchaseAmount) {
         isPurchaseAmountValid(purchaseAmount);
-        this.purchaseAmount = purchaseAmount;
         this.purchaseNumber = purchaseAmount / 1000;
     }
 
@@ -23,10 +21,6 @@ public class Shop {
             log.error("1000 단위의 숫자여야 합니다.");
             throw new IllegalArgumentException();
         }
-    }
-
-    public int getPurchaseNumber() {
-        return purchaseNumber;
     }
 
     public static Shop of(Integer purchaseAmount) {

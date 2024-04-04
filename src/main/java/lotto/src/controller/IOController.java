@@ -69,7 +69,7 @@ public class IOController {
         return bonusNumber;
     }
 
-    public void showLottoResult(Map<Integer, Integer> price, Map<Integer, Integer> result, Double profitRate) {
-        outputView.getLottoResultOutput(price, result, profitRate);
+    public void showLottoResult(String lottoResult) {
+        outputView.lottoResultOutput(lottoResult);
     }
 }
