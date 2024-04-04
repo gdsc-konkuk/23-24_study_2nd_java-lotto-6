@@ -1,21 +1,23 @@
 package lotto;
 
-import camp.nextstep.edu.missionutils.Randoms;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private final PurchaseHandler purchaseHandler;
+    private final LottoTicketsHandler ticketsHandler;
 
-    private final List<Lotto> lottoList = new ArrayList<>();
+    private List<Lotto> tickets;
     private int price;
-    public void start() {
-        purchase();
+
+    public Game() {
+        this.purchaseHandler = new PurchaseHandler();
+        this.ticketsHandler = new LottoTicketsHandler();
     }
 
-    private void purchase() {
-        PurchaseHandler purchase = new PurchaseHandler();
-        price = purchase.getValidPurchaseAmount();
+    public void start() {
+        price = purchaseHandler.getValidPurchaseAmount();
+        tickets = ticketsHandler.generateLottoTicket(price);
+        ticketsHandler.print(tickets);
     }
 
 }
