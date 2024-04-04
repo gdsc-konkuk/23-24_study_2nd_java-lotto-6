@@ -1,5 +1,9 @@
 package lotto;
 
+import lotto.handler.LottoTicketsHandler;
+import lotto.handler.PurchaseHandler;
+import lotto.handler.WinningNumbersHandler;
+
 import java.util.*;
 
 public class Game {
@@ -11,14 +15,14 @@ public class Game {
     private List<Lotto> tickets;
     private WinningNumbers winningNumbers;
     private HashMap<Score, Integer> result;
-    private  int earnedPrice;
+    private double winRate;
 
     public Game() {
         this.purchaseHandler = new PurchaseHandler();
         this.ticketsHandler = new LottoTicketsHandler();
         this.winningNumbersHandler = new WinningNumbersHandler();
         this.result = new HashMap<>();
-        this.earnedPrice = 0;
+        this.winRate = 0;
     }
 
     public void start() {
@@ -42,11 +46,13 @@ public class Game {
             Score score = lotto.countMatchingNumbers(winningNumbers);
             result.put(score, result.getOrDefault(score, 0) + 1);
         }
+        int earnedPrice = 0;
         for (Map.Entry<Score, Integer> entry : result.entrySet()) {
             Score score = entry.getKey();
             int count = entry.getValue();
             earnedPrice += score.getPrize() * count;
         }
+        winRate = ((double) earnedPrice / price) * 100.0;
     }
 
     private void printResult() {
@@ -57,7 +63,7 @@ public class Game {
         printScore(Score.FIVE, "5개 일치 (1,500,000원)");
         printScore(Score.FIVE_WITH_BONUS, "5개 일치, 보너스 볼 일치 (30,000,000원)");
         printScore(Score.SIX, "6개 일치 (2,000,000,000원)");
-        System.out.println("총 수익률은 " + earnedPrice + "원");
+        System.out.println("총 수익률은 " +winRate + "%입니다.");
     }
 
     private void printScore(Score score, String description) {
