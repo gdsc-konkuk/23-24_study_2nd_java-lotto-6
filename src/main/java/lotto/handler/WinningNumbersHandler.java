@@ -1,4 +1,7 @@
-package lotto;
+package lotto.handler;
+
+import lotto.Lotto;
+import lotto.WinningNumbers;
 
 import java.util.Arrays;
 import java.util.HashSet;
