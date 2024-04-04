@@ -1,9 +1,6 @@
 package lotto;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Lotto {
     private final List<Integer> numbers;
@@ -28,11 +25,12 @@ public class Lotto {
         }
     }
     public void print() {
-        Collections.sort(numbers);
+        List<Integer> sortedNumbers = new ArrayList<>(numbers);
+        Collections.sort(sortedNumbers);
         System.out.print("[");
-        for (int i = 0; i < numbers.size(); i++) {
-            System.out.print(numbers.get(i));
-            if (i < numbers.size() - 1) {
+        for (int i = 0; i < sortedNumbers.size(); i++) {
+            System.out.print(sortedNumbers.get(i));
+            if (i < sortedNumbers.size() - 1) {
                 System.out.print(", ");
             }
         }
