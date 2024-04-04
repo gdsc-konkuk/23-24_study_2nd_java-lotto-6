@@ -1,29 +1,30 @@
 package lotto.src.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import lotto.utils.Log;
 
-import java.util.List;
+import static lotto.common.message.Message.*;
 
-import static lotto.common.requests.RequestContext.*;
 
 public class InputView {
+    private static final Log log = new Log();
 
     public String priceInput() {
-        System.out.println(PRICE_REQUEST.getMessage());
+        log.info(PRICE_REQUEST);
         String priceStr = Console.readLine();
         System.out.println();
         return priceStr;
     }
 
     public String winningNumberInput() {
-        System.out.println(WINNING_NUMBER_REQUEST.getMessage());
+        log.info(WINNING_NUMBER_REQUEST);
         String winningNumberStr = Console.readLine();
         System.out.println();
         return winningNumberStr;
     }
 
     public String bonusNumberInput() {
-        System.out.println(BONUS_NUMBER_REQUEST.getMessage());
+        log.info(BONUS_NUMBER_REQUEST);
         String bonusNumberStr = Console.readLine();
         System.out.println();
         return bonusNumberStr;

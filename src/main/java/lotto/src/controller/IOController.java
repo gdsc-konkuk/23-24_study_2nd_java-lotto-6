@@ -1,25 +1,23 @@
 package lotto.src.controller;
 
 import lotto.common.exceptions.InputException;
-import lotto.src.model.Bonus;
-import lotto.src.model.Lotto;
-import lotto.src.model.Purchase;
+import lotto.src.model.lotto.Lotto;
 import lotto.src.view.InputView;
 import lotto.src.view.OutputView;
 import lotto.utils.Conversion;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 
 public class IOController {
     private final InputView inputView;
     private final OutputView outputView;
 
 
-    public IOController() {
-        this.inputView = new InputView();
-        this.outputView = new OutputView();
+    public IOController(InputView inputView, OutputView outputView) {
+        this.inputView = inputView;
+        this.outputView = outputView;
     }
 
     public Integer purchasePriceInput() {
@@ -37,9 +35,8 @@ public class IOController {
         return price;
     }
 
-    public List<List<Integer>> showPurchasedLotto(List<List<Integer>> purchasedLottos) {
+    public void showPurchasedLotto(List<Lotto> purchasedLottos) {
         outputView.purchasedLottosOutput(purchasedLottos);
-        return purchasedLottos;
     }
 
     public List<Integer> winningNumberInput() {

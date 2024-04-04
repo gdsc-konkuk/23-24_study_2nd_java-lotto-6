@@ -1,33 +1,32 @@
 package lotto.src.view;
 
+import lotto.src.model.lotto.Lotto;
 import lotto.utils.Conversion;
+import lotto.utils.Log;
 
 import java.util.List;
 import java.util.Map;
 
-import static lotto.common.responses.ResponseContext.*;
+import static lotto.common.message.Message.PURCHASED_LOTTO;
+import static lotto.common.message.Message.LOTTO_RESULT;
+
 public class OutputView {
-    public void purchasedLottosOutput(List<List<Integer>> lottos) {
-        System.out.println(lottos.size() + PURCHASED_LOTTO.getMessage());
+    private static final Log log = new Log();
+    public void purchasedLottosOutput(List<Lotto> lottos) {
+        log.info(lottos.size() + PURCHASED_LOTTO);
         printPurchasedLottos(lottos);
         System.out.println();
     }
 
-    private void printPurchasedLottos(List<List<Integer>> lottos) {
-        for (List<Integer> lotto : lottos) {
-            System.out.print("[");
-            for (int i = 0; i < lotto.size(); i++) {
-                System.out.print(lotto.get(i));
-                if (i < lotto.size() - 1) {
-                    System.out.print(", ");
-                }
-            }
-            System.out.println("]");
+    private void printPurchasedLottos(List<Lotto> lottos) {
+        for (Lotto lotto : lottos) {
+            lotto.numberSort();
+            log.info(lotto.toString());
         }
     }
 
     public void getLottoResultOutput(Map<Integer, Integer> price, Map<Integer, Integer> result, Double profitRate) {
-        System.out.println(LOTTO_RESULT.getMessage());
+        System.out.println(LOTTO_RESULT);
         System.out.println("---");
         printLottoWinResult(price, result);
         printLottoWinRate(profitRate);
