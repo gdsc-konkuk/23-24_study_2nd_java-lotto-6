@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static lotto.common.exceptions.ExceptionContext.NUMBER_WRONG_TYPE;
-
 public class Conversion {
     public static ArrayList<Integer> stringWithCommaToArrayList(String input) {
         return Arrays.stream(input.split(","))

@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static lotto.common.Constant.*;
-import static lotto.common.exceptions.ExceptionContext.*;
+import static lotto.common.message.Message.*;
 
 public class InputException {
 
@@ -45,7 +45,7 @@ public class InputException {
         try {
             int number = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());
+            throw new IllegalArgumentException(NUMBER_WRONG_TYPE);
         }
     }
 
@@ -57,37 +57,37 @@ public class InputException {
                 int number = Integer.parseInt(num);
             }
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(NUMBER_WRONG_TYPE.getMessage());
+            throw new IllegalArgumentException(NUMBER_WRONG_TYPE);
         }
     }
 
     private static void checkInputPriceRange(Integer input) {
         if (input <= 0) {
-            throw new IllegalArgumentException(PRICE_NOT_POSITIVE.getMessage());
+            throw new IllegalArgumentException(PRICE_NOT_POSITIVE);
         }
     }
 
     private static void checkInputPriceDivision(Integer input) {
         if (input % 1000 != 0) {
-            throw new IllegalArgumentException(PRICE_NOT_DIVIDED_BY_THOUSAND.getMessage());
+            throw new IllegalArgumentException(PRICE_NOT_DIVIDED_BY_THOUSAND);
         }
     }
 
     private static void checkInputCommaDivided(List<Integer> input) {
         if (input.isEmpty()) {
-            throw new IllegalArgumentException(NUMBER_NOT_SPLIT_BY_COMMA.getMessage());
+            throw new IllegalArgumentException(NUMBER_NOT_SPLIT_BY_COMMA);
         }
     }
 
     private static void checkInputRange(Integer input) {
         if (input < MIN_LOTTO_NUMBER || input > MAX_LOTTO_NUMBER) {
-            throw new IllegalArgumentException(NUMBER_RANGE_ERROR.getMessage());
+            throw new IllegalArgumentException(NUMBER_RANGE_ERROR);
         }
     }
 
     private static void checkInputSize(List<Integer> input) {
         if (input.size() != LOTTO_WINNING_NUMBER_SIZE) {
-            throw new IllegalArgumentException(NUMBER_LIST_SIZE_ERROR.getMessage());
+            throw new IllegalArgumentException(NUMBER_LIST_SIZE_ERROR);
         }
     }
 
@@ -99,13 +99,13 @@ public class InputException {
 
     private static void checkInputNumberDuplicate(List<Integer> input) {
         if (hasDuplicates(input)) {
-            throw new IllegalArgumentException(NUMBER_DUPLICATE_ERROR.getMessage());
+            throw new IllegalArgumentException(NUMBER_DUPLICATE_ERROR);
         }
     }
 
     private static void checkInputDuplicateNumber(List<Integer> winningNumber, Integer input) {
         if (winningNumber.contains(input)) {
-            throw new IllegalArgumentException(BONUS_NUMBER_DUPLICATE_ERROR.getMessage());
+            throw new IllegalArgumentException(BONUS_NUMBER_DUPLICATE_ERROR);
         }
     }
 
