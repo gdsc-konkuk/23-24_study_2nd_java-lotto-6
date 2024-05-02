@@ -16,5 +16,7 @@ public class Lotto {
     }
   }
 
-  // TODO: 추가 기능 구현
+  public static Lotto rand() {
+    return new Lotto(List.of(1, 2, 3, 4, 5, 6));
+  }
 }
