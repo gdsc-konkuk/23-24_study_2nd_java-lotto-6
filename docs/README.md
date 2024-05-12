@@ -57,7 +57,8 @@ sequenceDiagram
 ```mermaid
 classDiagram
     direction RL
-    Payment -- Draw
+    Payment --> Money
+    Payment --> Draw
     Payment --o Lottery
     Lottery --* Lotto
     Lotto --* Result
@@ -276,66 +277,77 @@ sequenceDiagram
 
 ```mermaid
 classDiagram
-    Application --* Payment
-    Application --* LottoResult
-    Payment --o Lotteries
-    Payment --> WinningResults
-    LottoResult ..> Lotto
-    Lotteries --* Lotto
-    WinningResults --* WinningResult
+    direction RL
+    Application --> Money
+    Application --> Draw
+    Application --> Payment
+    Payment --o Lottery
+    Lottery --* Lotto
+    Lotto --* Result
+    Payment --* Prize
 
     class Application {
-        -payment: Payment
-        -lottoResult: LottoResult
-        +start() void
+    }
+
+    class Money {
+        -UNIT: Integer$
+        -value: Integer
+        +fromUser() Money$
+        +parse(input: String) Integer
+        +setValue(value: Integer) void
     }
 
     class Payment {
-        -price: Integer$
-        -money: Integer
-        -lotteries: Lotteries
-        +fromUser() Payment$
-        -getMoney() Integer
-        +getWinningResults(lottoResult: LottoResult) WinningResults
+        -MIN_AMOUNT: Money$
+        -amount: Money
+        +new(amount: Money) Payment$
+        +toString() String
+        +getPrize(draw: Draw) Prize
+    }
+
+    class Lottery {
+        -amount: Integer
+        +new(amount: Integer) Lottery$
+        +add(lotto: Lotto) void
+        +toString() String
+        +getResults(draw: Draw) Result[]
     }
 
     class Lotto {
-        -rangeStart: Integer$
-        -rangeEnd: Integer$
-        -numOfNumbers: Integer$
-        -numbers: List<Integer>
+        -PRICE: Money$
+        -NUM_LOWER: Integer$
+        -NUM_UPPER: Integer$
+        -LEN: Integer$
+        -numbers: Integer[]
         +rand() Lotto$
+        +toString() String
+        +getResult(draw: Draw) Result
     }
 
-    class Lotteries {
-        -lotteries: List<Lotto>
-        +Lotteries(amount: Integer) Lotteries$
-        +add(lotto) void
-        +showAll() void
+    class Draw {
+        -BONUS_LEN: Integer$
+        -WINNING_LEN: Integer$
+        -winningNumbers: Integer[]
+        -bonuseNumbers: Integer[]
+        +fromUser() Draw$
+        +parse(input: String) Integer[]
+        +setWinningNumbers(winningNumbers: Integer[]) void
+        +setBonusNumbers(bonusNumbers: Integer[]) void
     }
 
-    class LottoResult {
-        -numOfBonuseNumbers: Integer$
-        -winningNumbers: List<Integer>
-        -bonuseNumbers: List<Integer>
-        +fromUser() LottoResult$
-        -getWinningNumbers() String
-        -getBonusNumber() String
-        +genWinningResult(lotto: Lotto) WinningResult
-    }
-
-    class WinningResult {
+    class Result {
         <<Enumeration>>
-        -reward: Integer
         +FIRST_PRIZE$
         +SECOND_AND_BONUSE_PRIZE$
         +SECOND_PRIZE$
         +THIRD_PRIZE$
         +FOURTH_PRIZE$
         +FIFTH_PRIZE$
+        -reward: Integer
     }
 
-    class WinningResults {
-        -lottoResults: List<WinningResult>
+    class Prize {
+        +new(results: Result[]) Prize$
+        +toString() String
     }
 ```
