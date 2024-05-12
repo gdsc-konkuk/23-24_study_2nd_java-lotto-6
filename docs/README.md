@@ -110,123 +110,166 @@ classDiagram
 
 ```mermaid
 ---
-title: Purchase Lotteries
+title: Buy Lottery
 ---
 sequenceDiagram
+    actor User
     box System
-        actor Application
+        participant Money
+        participant Application
         participant Payment
-        participant Lotteries
+        participant Lottery
         participant Lotto
     end
-    participant User
-    Application ->>+ Payment: Payment.fromUser(): Payment
 
-    loop until get proper input
-        rect rgb(0, 200, 200)
-            Payment -->> User: 구입금액을 입력해 주세요.
-            Payment ->>+ User: getMoney(): Integer
-            User -->>- Payment: Money
+    User ->>+ Application: Buy Lotto
+    rect rgb(0, 200, 200, 0.2)
+        Application ->>+ Money: Money.fromUser(): Money
+
+        loop until get proper input
+            rect rgb(200, 0, 0, 0.2)
+                Money -->> User: 구입금액을 입력해 주세요.
+                User -->> Money: String
+            end
+            Money ->> Money: parse(input: String): Integer
+            alt If not an integer
+                Money -->> User: [ERROR] 구입금액은 숫자여야 합니다.
+            else If out of range
+                Money -->> User: [ERROR] 구입금액은 1,000 이상의 숫자여야 합니다.
+            else If not divisible by 1,000
+                Money -->> User: [ERROR] 구입금액의 기본 단위는 1,000원 입니다.
+            end
+            Money ->> Money: setValue(value: Integer): void
         end
 
-        alt If not an integer
-            Payment -->> User: [ERROR] 구입금액은 숫자여야 합니다.
-        else If out of range
-            Payment -->> User: [ERROR] 구입금액은 1,000 이상의 숫자여야 합니다.
-        else If not divisible by 1,000
-            Payment -->> User: [ERROR] 구입금액의 기본 단위는 1,000원 입니다.
-        end
+        Money -->>- Application: Money
     end
 
-    Payment ->>+ Lotteries: Lotteries(amount): Lotteries
-    loop amount
-        rect rgb(0, 200, 200)
-            Lotteries ->>+ Lotto: Lotto.rand(): Lotto
-            Lotto -->>- Lotteries: Lotto
-            Lotteries ->> Lotteries: add(lotto): void
-        end
-        Lotteries -->>- Payment: Lotteries
-    end
+    rect rgb(0, 200, 200, 0.2)
+        Application ->>+ Payment: Payment.new(amount: Money): Payment
+        Payment ->>+ Lottery: Lottery.new(amount: Integer): Lottery
 
-    rect rgb(0, 200, 200)
-        Payment -->> User: x개를 구매했습니다.
-        Payment ->>+ Lotteries: showAll(): void
         loop amount
-            Lotteries -->>- User: [a, b, c, d, e, f]
+            rect rgb(200, 0, 000, 0.2)
+                Lottery ->>+ Lotto: Lotto.rand(): Lotto
+                Lotto -->>- Lottery: Lotto
+            end
+            Lottery ->> Lottery: add(lotto: Lotto): void
         end
+
+        Lottery -->>- Payment: Lottery
+        Payment -->>- Application: Payment
     end
 
-    Payment -->>- Application: Payment
+    rect rgb(0, 200, 200, 0.2)
+        Application ->>+ Payment: toString(): String
+        Payment ->>+ Lottery: toString(): String
+        loop amount
+            rect rgb(200, 0, 000, 0.2)
+                Lottery ->>+ Lotto: toString(): String
+                Lotto -->>- Lottery: String
+            end
+        end
+        Lottery -->>- Payment: String
+        Payment -->>- Application: String
+    end
+    Application -->>- User: String
 ```
 
 ```mermaid
 ---
-title: Get Lotto Result
+title: Draw
 ---
 sequenceDiagram
+    actor User
     box System
-        actor Application
-        participant LottoResult
-    end
-    participant User
-    Application ->>+ LottoResult: LottoResult.fromUser(): LottoResult
-
-    loop until get proper input
-        rect rgb(0, 200, 200)
-            LottoResult -->> User: 당첨 번호를 입력해 주세요.
-            LottoResult ->>+ User: getWinningNumbers(): String
-            User -->>- LottoResult: WinningNumbers
-        end
-
-        alt If it can't be parsed as a list of integers
-            LottoResult -->> User: [ERROR] 로또 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
-        else If out of range
-            LottoResult -->> User: [ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.
-        else If the length is incorrect
-            LottoResult -->> User: [ERROR] 로또 번호는 6개의 숫자로 이뤄져야 합니다.
-        end
+        participant Draw
+        participant Application
     end
 
-    loop until get proper input
-        rect rgb(0, 200, 200)
-            LottoResult -->> User: 보너스 번호를 입력해 주세요.
-            LottoResult ->>+ User: getBonusNumber(): String
-            User -->>- LottoResult: BonusNumber
+    User ->>+ Application: Draw
+    rect rgb(0, 200, 200, 0.2)
+        Application ->>+ Draw: Draw.fromUser(): Draw
+
+        loop until get proper input
+            rect rgb(200, 0, 0, 0.2)
+                Draw -->> User: 당첨 번호를 입력해 주세요.
+                User -->> Draw: String
+            end
+            Draw ->> Draw: parse(input: String): Integer[]
+
+            alt If it can't be parsed as a list of integers
+                Draw -->> User: [ERROR] 로또 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
+            else If out of range
+                Draw -->> User: [ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.
+            else If the length is incorrect
+                Draw -->> User: [ERROR] 로또 번호는 6개의 숫자로 이뤄져야 합니다.
+            end
+            Draw ->> Draw: setWinningNumbers(winningNumbers: Integer[]): void
         end
 
-        alt If it can't be parsed as a list of integers
-            LottoResult -->> User: [ERROR] 보너스 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
-        else If out of range
-            LottoResult -->> User: [ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.
-        else If the length is incorrect
-            LottoResult -->> User: [ERROR] 보너스 번호는 1개의 숫자로 이뤄져야 합니다.
+        loop until get proper input
+            rect rgb(200, 0, 0, 0.2)
+                Draw -->> User: 보너스 번호를 입력해 주세요.
+                User -->> Draw: String
+            end
+            Draw ->> Draw: parse(input: String): Integer[]
+
+            alt If it can't be parsed as a list of integers
+                Draw -->> User: [ERROR] 보너스 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
+            else If out of range
+                Draw -->> User: [ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.
+            else If the length is incorrect
+                Draw -->> User: [ERROR] 보너스 번호는 1개의 숫자로 이뤄져야 합니다.
+            end
+            Draw ->> Draw: setBonusNumbers(bonusNumbers: Integer[]): void
         end
+
+        Draw -->>- Application: Draw
     end
 
-    LottoResult -->>- Application: LottoResult
+    deactivate Application
 ```
 
 ```mermaid
 ---
-title: Generate Winning Result
+title: Show Prize
 ---
 sequenceDiagram
+    actor User
     box System
-        actor Application
+        participant Application
         participant Payment
-        participant LottoResult
+        participant Lottery
+        participant Lotto
+        participant Prize
     end
 
-    Application ->>+ Payment: genWinningResults(lottoResult): WinningResults
+    User ->>+ Application: Show Prize
+    rect rgb(0, 200, 200, 0.2)
+        Application ->>+ Payment: getPrize(draw: Draw): Prize
+        Payment ->>+ Lottery: getResults(draw: Draw): Result[]
 
-    loop lotteries
-        rect rgb(0, 200, 200)
-            Payment ->>+ LottoResult: genWinningResult(lotto): WinningResult
-            LottoResult -->>- Payment: WinningResult
+        loop lottery
+            rect rgb(200, 0, 0, 0.2)
+                Lottery ->>+ Lotto: getResult(draw: Draw): Result
+                Lotto -->>- Lottery: Result
+            end
+        end
+        Lottery -->>- Payment: Result[]
+
+        rect rgb(200, 0, 0, 0.2)
+            Payment ->>+ Prize: Prize.new(results: Result[]): Prize
+            Prize -->>- Payment: Prize
+        end
+        Payment -->>- Application: Prize
+
+        rect rgb(200, 0, 0, 0.2)
+            Application ->>+ Prize: toString(): String
+            Prize -->>- Application: String
         end
     end
-
-    Payment -->>- Application: WinningResults
+    Application -->>- User: String
 ```
 
 ### Design Model
