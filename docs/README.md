@@ -9,14 +9,13 @@ sequenceDiagram
 
     rect rgb(0, 200, 200, 0.2)
         User ->>+ System: buyLottery
-
-        rect rgb(200, 0, 200, 0.2)
-            System -->> User: Money Request
-            loop until get proper input
+        System -->> User: Money Request
+        loop until get proper input
+            rect rgb(200, 0, 000, 0.2)
                 User -->> System: Money
-                opt wrong input
-                    System -->> User: Why user input is wrong
-                end
+            end
+            opt wrong input
+                System -->> User: Why user input is wrong
             end
         end
 
@@ -25,32 +24,31 @@ sequenceDiagram
 
     rect rgb(0, 200, 200, 0.2)
         User ->>+ System: draw
-
-        rect rgb(200, 0, 200, 0.2)
-            System -->> User: WinningNumbers Request
-            loop until get proper input
+        System -->> User: WinningNumbers Request
+        loop until get proper input
+            rect rgb(200, 0, 000, 0.2)
                 User -->> System: WinningNumbers
-                opt wrong input
-                    System -->> User: Why user input is wrong
-                end
+            end
+            opt wrong input
+                System -->> User: Why user input is wrong
             end
         end
 
-        rect rgb(200, 0, 200, 0.2)
-            System -->> User: BonusNumber Request
-            loop until get proper input
+        System -->> User: BonusNumber Request
+        loop until get proper input
+            rect rgb(200, 0, 000, 0.2)
                 User -->> System: BonusNumber
-                opt wrong input
-                    System -->> User: Why user input is wrong
-                end
+            end
+            opt wrong input
+                System -->> User: Why user input is wrong
             end
             deactivate System
         end
     end
 
     rect rgb(0, 200, 200, 0.2)
-        User ->>+ System: showResult
-        System -->>- User: Result
+        User ->>+ System: showPrize
+        System -->>- User: Prize
     end
 ```
 
@@ -58,55 +56,51 @@ sequenceDiagram
 
 ```mermaid
 classDiagram
-    Application --* Payment
-    Application --* LottoResult
-    Payment --o Lotteries
-    Payment --> WinningResults
-    LottoResult ..> Lotto
-    Lotteries --* Lotto
-    WinningResults --* WinningResult
+    direction RL
+    Payment -- Draw
+    Payment --o Lottery
+    Lottery --* Lotto
+    Lotto --* Result
+    Payment --* Prize
 
-    class Application {
-        -payment: Payment
-        -lottoResult: LottoResult
+    class Money {
+        -UNIT: Integer$
+        -value: Integer
     }
 
     class Payment {
-        -price: Integer$
-        -money: Integer
-        -lotteries: Lotteries
+        -MIN_AMOUNT: Money$
+        -amount: Money
+    }
+
+    class Lottery {
+        -amount: Integer
     }
 
     class Lotto {
-        -rangeStart: Integer$
-        -rangeEnd: Integer$
-        -numOfNumbers: Integer$
-        -numbers: List<Integer>
+        -PRICE: Money$
+        -NUM_LOWER: Integer$
+        -NUM_UPPER: Integer$
+        -LEN: Integer$
+        -numbers: Integer[]
     }
 
-    class Lotteries {
-        -lotteries: List<Lotto>
+    class Draw {
+        -BONUS_LEN: Integer$
+        -WINNING_LEN: Integer$
+        -winningNumbers: Integer[]
+        -bonuseNumbers: Integer[]
     }
 
-    class LottoResult {
-        -numOfBonuseNumbers: Integer$
-        -winningNumbers: List<Integer>
-        -bonuseNumbers: List<Integer>
-    }
-
-    class WinningResult {
+    class Result {
         <<Enumeration>>
-        -reward: Integer
         +FIRST_PRIZE$
         +SECOND_AND_BONUSE_PRIZE$
         +SECOND_PRIZE$
         +THIRD_PRIZE$
         +FOURTH_PRIZE$
         +FIFTH_PRIZE$
-    }
-
-    class WinningResults {
-        -lottoResults: List<WinningResult>
+        -reward: Integer
     }
 ```
 
