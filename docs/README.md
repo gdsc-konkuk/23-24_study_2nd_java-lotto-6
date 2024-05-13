@@ -65,12 +65,12 @@ classDiagram
     Payment --* Prize
 
     class Money {
+        -MIN_VALUE: Integer$
         -UNIT: Integer$
         -value: Integer
     }
 
     class Payment {
-        -MIN_AMOUNT: Money$
         -amount: Money
     }
 
@@ -127,27 +127,34 @@ sequenceDiagram
     rect rgb(0, 200, 200, 0.2)
         Application ->>+ Money: Money.fromUser(): Money
 
-        loop until get proper input
-            rect rgb(200, 0, 0, 0.2)
+        rect rgb(200, 0, 0, 0.2)
+            loop until get proper input
                 Money -->> User: 구입금액을 입력해 주세요.
                 User -->> Money: String
-            end
-            Money ->> Money: parse(input: String): Integer
-            alt If not an integer
-                Money -->> User: [ERROR] 구입금액은 숫자여야 합니다.
-            else If out of range
-                Money -->> User: [ERROR] 구입금액은 1,000 이상의 숫자여야 합니다.
-            else If not divisible by 1,000
-                Money -->> User: [ERROR] 구입금액의 기본 단위는 1,000원 입니다.
-            end
-            Money ->> Money: setValue(value: Integer): void
-        end
+                Money ->> Money: parse(input: String): Integer
 
+                alt If not an integer
+                    Money -->> User: [ERROR] 구입금액은 숫자여야 합니다.
+                else If out of range
+                    Money -->> User: [ERROR] 구입금액은 1,000 이상의 숫자여야 합니다.
+                else If not divisible by 1,000
+                    Money -->> User: [ERROR] 구입금액의 기본 단위는 1,000원 입니다.
+                end
+
+                break
+                    Money -->> Money: Integer
+                end
+            end
+        end
+        Money ->> Money: new(value: Integer): Money
         Money -->>- Application: Money
     end
 
     rect rgb(0, 200, 200, 0.2)
         Application ->>+ Payment: Payment.new(amount: Money): Payment
+        Lotto -->> Payment: Lotto.PRICE:Money
+        Payment ->>+ Money: divide(other: Money): Integer
+        Money -->>- Payment: Integer
         Payment ->>+ Lottery: Lottery.new(amount: Integer): Lottery
 
         loop amount
@@ -196,36 +203,43 @@ sequenceDiagram
             rect rgb(200, 0, 0, 0.2)
                 Draw -->> User: 당첨 번호를 입력해 주세요.
                 User -->> Draw: String
-            end
-            Draw ->> Draw: parse(input: String): Integer[]
+                Draw ->> Draw: parse(input: String): Integer[]
 
-            alt If it can't be parsed as a list of integers
-                Draw -->> User: [ERROR] 로또 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
-            else If out of range
-                Draw -->> User: [ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.
-            else If the length is incorrect
-                Draw -->> User: [ERROR] 로또 번호는 6개의 숫자로 이뤄져야 합니다.
+                alt If it can't be parsed as a list of integers
+                    Draw -->> User: [ERROR] 당첨 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
+                else If out of range
+                    Draw -->> User: [ERROR] 당첨 번호는 1부터 45 사이의 숫자여야 합니다.
+                else If the length is incorrect
+                    Draw -->> User: [ERROR] 당첨 번호는 6개의 숫자로 이뤄져야 합니다.
+                end
+
+                break
+                    Draw -->> Draw: Integer[]
+                end
             end
-            Draw ->> Draw: setWinningNumbers(winningNumbers: Integer[]): void
         end
 
         loop until get proper input
             rect rgb(200, 0, 0, 0.2)
                 Draw -->> User: 보너스 번호를 입력해 주세요.
                 User -->> Draw: String
-            end
-            Draw ->> Draw: parse(input: String): Integer[]
+                Draw ->> Draw: parse(input: String): Integer[]
 
-            alt If it can't be parsed as a list of integers
-                Draw -->> User: [ERROR] 보너스 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
-            else If out of range
-                Draw -->> User: [ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.
-            else If the length is incorrect
-                Draw -->> User: [ERROR] 보너스 번호는 1개의 숫자로 이뤄져야 합니다.
+                alt If it can't be parsed as a list of integers
+                    Draw -->> User: [ERROR] 보너스 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
+                else If out of range
+                    Draw -->> User: [ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.
+                else If the length is incorrect
+                    Draw -->> User: [ERROR] 보너스 번호는 1개의 숫자로 이뤄져야 합니다.
+                end
+
+                break
+                    Draw -->> Draw: Integer[]
+                end
             end
-            Draw ->> Draw: setBonusNumbers(bonusNumbers: Integer[]): void
         end
 
+        Draw ->> Draw: Draw.new(winningNumbers: Integer[], bonusNumbers: Integer[]): Draw
         Draw -->>- Application: Draw
     end
 
@@ -251,8 +265,8 @@ sequenceDiagram
         Application ->>+ Payment: getPrize(draw: Draw): Prize
         Payment ->>+ Lottery: getResults(draw: Draw): Result[]
 
-        loop lottery
-            rect rgb(200, 0, 0, 0.2)
+        rect rgb(200, 0, 0, 0.2)
+            loop lottery
                 Lottery ->>+ Lotto: getResult(draw: Draw): Result
                 Lotto -->>- Lottery: Result
             end
@@ -290,15 +304,16 @@ classDiagram
     }
 
     class Money {
+        -MIN_VALUE: Integer$
         -UNIT: Integer$
         -value: Integer
         +fromUser() Money$
-        +parse(input: String) Integer
-        +setValue(value: Integer) void
+        +parse(input: String) Integer$
+        -new(value: Integer) Money
+        +divide(other: Money) Integer
     }
 
     class Payment {
-        -MIN_AMOUNT: Money$
         -amount: Money
         +new(amount: Money) Payment$
         +toString() String
@@ -330,9 +345,8 @@ classDiagram
         -winningNumbers: Integer[]
         -bonuseNumbers: Integer[]
         +fromUser() Draw$
-        +parse(input: String) Integer[]
-        +setWinningNumbers(winningNumbers: Integer[]) void
-        +setBonusNumbers(bonusNumbers: Integer[]) void
+        +parse(input: String) Integer[]$
+        -new(winningNumbers: Integer[], bonusNumbers: Integer[]) Draw$
     }
 
     class Result {
