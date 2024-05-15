@@ -133,7 +133,8 @@ sequenceDiagram
 
                 Money -->>- Application: Money
                 Application ->>+ Payment: Payment.new(amount: Money)
-
+                Payment ->>+ Money: gte(other: Money)
+                Money -->>- Payment: Boolean
                 alt If under minimum amount
                     Payment -->> User: [ERROR] 최소 주문 금액은 1000원입니다.
                 end
@@ -320,6 +321,7 @@ classDiagram
         +total(sources: Money[]) Money$
         +new(value: Integer) Money$
         +divide(other: Money) Integer
+        +gte(other: Money) Boolean
         -validate(value: Integer) void
     }
 

@@ -31,6 +31,10 @@ public class Money {
     return this.value / other.value;
   }
 
+  public boolean gte(Money other) {
+    return this.value >= other.value;
+  }
+
   private void validate(int value) {
     if (value % Money.UNIT != 0) {
       throw new IllegalArgumentException("[ERROR] 금액 단위는 1,000원입니다.");

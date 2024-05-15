@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -84,6 +85,31 @@ class MoneyTest {
   }
 
   @Nested
+  class total {
+    @DisplayName("총액을 알 수 있다.")
+    @ParameterizedTest()
+    @MethodSource({"genTotalTestInput"})
+    void byGenerator(List<Money> left, int right) {
+      // when
+      Money result = Money.total(left);
+
+      // then
+      assertThat(result).hasFieldOrPropertyWithValue("value", right);
+    }
+
+    private static Stream<Arguments> genTotalTestInput() {
+      Money money5000 = new Money(5_000);
+      Money money3000 = new Money(3_000);
+      Money money1000 = new Money(1_000);
+
+      return Stream.of(
+          Arguments.of(List.of(money3000, money1000, money1000), 3_000 + 1_000 + 1_000),
+          Arguments.of(List.of(money3000, money5000, money1000), 3_000 + 5_000 + 1_000),
+          Arguments.of(List.of(money3000, money5000, money5000), 3_000 + 5_000 + 5_000));
+    }
+  }
+
+  @Nested
   class constructor {
     @DisplayName("정수로 생성할 수 있다.")
     @ParameterizedTest
@@ -126,27 +152,47 @@ class MoneyTest {
   }
 
   @Nested
-  class total {
-    @DisplayName("총액을 알 수 있다.")
-    @ParameterizedTest()
-    @MethodSource({"genTotalTestInput"})
-    void byGenerator(List<Money> left, int right) {
+  class gte {
+    @DisplayName("더 작은 돈과 비교하면 `false`를 반환한다.")
+    @Test
+    void byLess() {
+      // given
+      Money greater = new Money(3_000);
+      Money less = new Money(2_000);
+
       // when
-      Money result = Money.total(left);
+      boolean result = greater.gte(less);
 
       // then
-      assertThat(result).hasFieldOrPropertyWithValue("value", right);
+      assertThat(result).isFalse();
     }
 
-    private static Stream<Arguments> genTotalTestInput() {
-      Money money5000 = new Money(5_000);
-      Money money3000 = new Money(3_000);
-      Money money1000 = new Money(1_000);
+    @DisplayName("더 큰 돈과 비교하면 `true`를 반환한다.")
+    @Test
+    void byGreater() {
+      // given
+      Money greater = new Money(3_000);
+      Money less = new Money(2_000);
 
-      return Stream.of(
-          Arguments.of(List.of(money3000, money1000, money1000), 3_000 + 1_000 + 1_000),
-          Arguments.of(List.of(money3000, money5000, money1000), 3_000 + 5_000 + 1_000),
-          Arguments.of(List.of(money3000, money5000, money5000), 3_000 + 5_000 + 5_000));
+      // when
+      boolean result = less.gte(greater);
+
+      // then
+      assertThat(result).isTrue();
+    }
+
+    @DisplayName("같은 돈과 비교하면 `true`를 반환한다.")
+    @Test
+    void bySame() {
+      // given
+      Money same1 = new Money(3_000);
+      Money same2 = new Money(3_000);
+
+      // when
+      boolean result = same1.gte(same2);
+
+      // then
+      assertThat(result).isTrue();
     }
   }
 }
