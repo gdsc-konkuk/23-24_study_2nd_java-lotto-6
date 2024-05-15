@@ -7,7 +7,7 @@ public class Lottery {
   private final List<Lotto> values;
 
   public Lottery(int amount) {
-    this.values = new ArrayList<Lotto>();
+    this.values = new ArrayList<>();
     for (int i = 0; i < amount; i++) {
       this.values.add(Lotto.rand());
     }
