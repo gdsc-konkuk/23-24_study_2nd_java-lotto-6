@@ -201,6 +201,8 @@ sequenceDiagram
                     WinningNumbers -->> User: [ERROR] 당첨 번호는 1부터 45 사이의 숫자여야 합니다.
                 else If the length is incorrect
                     WinningNumbers -->> User: [ERROR] 당첨 번호는 6개의 숫자로 이뤄져야 합니다.
+                else If duplicated
+                    WinningNumbers -->> User: [ERROR] 당첨 번호는 중복이 없어야 합니다.
                 end
 
             end
@@ -215,6 +217,7 @@ sequenceDiagram
                 User -->> BonusNumber: String
                 Lotto -->> BonusNumber: Lotto.NUM_LOWER
                 Lotto -->> BonusNumber: Lotto.NUM_UPPER
+
                 alt If not an integer
                     BonusNumber -->> User: [ERROR] 보너스 번호는 숫자여야 합니다.
                 else If out of range
@@ -222,7 +225,10 @@ sequenceDiagram
                 end
 
                 BonusNumber -->>- Draw: BonusNumber
-
+                Draw ->>+ WinningNumbers: overlap(bonusNumber: BonusNumber)
+                WinningNumbers ->>+ BonusNumber: equals(number: Integer)
+                BonusNumber -->>- WinningNumbers: Boolean
+                WinningNumbers -->>- Draw: Boolean
                 alt If overlap with winning nums
                     Draw -->> User: [ERROR] 보너스 번호는 당첨 번호와 겹치지 않아야 합니다.
                 end
@@ -358,15 +364,19 @@ classDiagram
     class WinningNumbers {
         -LEN: Integer$
         -numbers: Integer[]
+        +fromUser() WinningNumbers$
         +new(numbers: Integer[]) WinningNumbers
+        +overlap(bonusNumber: BonusNumber) Boolean
         +compare(lotto: Lotto) Integer
         -validate(numbers: Integer[]) void
     }
 
     class BonusNumber {
         -number: Integer
+        +fromUser() BonusNumber$
         +new(number: Integer) BonusNumber
         +compare(lotto: Lotto) Boolean
+        +equals(number: Integer) Boolean
         -validate(number: Integer) void
     }
 
