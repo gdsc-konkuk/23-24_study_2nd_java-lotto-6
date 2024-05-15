@@ -34,6 +34,7 @@ public class Lotto {
 
     for (Integer num : numbers) {
       if (num < Lotto.NUM_LOWER || num > Lotto.NUM_UPPER) {
+        // TODO
         throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
       }
     }
