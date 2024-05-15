@@ -281,7 +281,14 @@ sequenceDiagram
 
     rect rgb(0, 200, 200, 0.2)
         Application ->>+ Result: toString()
-        Result ->>+ Money: total(others: Money[])
+
+        rect rgb(200, 0, 0, 0.2)
+            loop prizes
+                Result ->>+ Prize: getReward()
+                Prize -->>- Result: Money
+            end
+        end
+        Result ->>+ Money: Money.total(sources: Money[])
         Money -->>- Result: Money
         Result ->>+ Payment: getAmount()
         Payment -->>- Result: Money
@@ -310,9 +317,9 @@ classDiagram
         -UNIT: Integer$
         -value: Integer
         +fromUser() Money$
-        +new(input: String) Money$
+        +total(sources: Money[]) Money$
+        +new(value: Integer) Money$
         +divide(other: Money) Integer
-        +total(others: Money[]) Money
         -validate(value: Integer) void
     }
 

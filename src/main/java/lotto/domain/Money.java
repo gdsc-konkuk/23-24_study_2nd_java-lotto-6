@@ -2,25 +2,24 @@ package lotto.domain;
 
 import camp.nextstep.edu.missionutils.Console;
 
+import java.util.List;
+
 public class Money {
-  private static final int MIN_VALUE = 1_000;
   private static final int UNIT = 1_000;
   private final int value;
 
   public static Money fromUser() {
-    String input = Console.readLine();
-    int value = Money.parse(input);
-    return new Money(value);
+    try {
+      System.out.println("금액을 입력해 주세요.");
+      String input = Console.readLine();
+      return new Money(Integer.parseInt(input));
+    } catch (NumberFormatException ex) {
+      throw new IllegalArgumentException("[ERROR] 금액은 숫자여야 합니다.");
+    }
   }
 
-  public static int parse(String input) {
-    try {
-      int parsed = Integer.parseInt(input);
-      new Money(parsed);
-      return parsed;
-    } catch (NumberFormatException ex) {
-      throw new IllegalArgumentException("[ERROR] 구입금액은 숫자여야 합니다.");
-    }
+  public static Money total(List<Money> sources) {
+    return new Money(sources.stream().map((other) -> other.value).reduce(0, Integer::sum));
   }
 
   public Money(int value) {
@@ -33,12 +32,8 @@ public class Money {
   }
 
   private void validate(int value) {
-    if (value < Money.MIN_VALUE) {
-      throw new IllegalArgumentException("[ERROR] 구입금액은 1,000 이상의 숫자여야 합니다.");
-    }
-
     if (value % Money.UNIT != 0) {
-      throw new IllegalArgumentException("[ERROR] 구입금액의 기본 단위는 1,000원 입니다.");
+      throw new IllegalArgumentException("[ERROR] 금액 단위는 1,000원입니다.");
     }
   }
 }
