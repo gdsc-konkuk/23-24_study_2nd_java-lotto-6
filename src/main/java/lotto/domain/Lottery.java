@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lottery {
-  private List<Lotto> values;
+  private final List<Lotto> values;
 
   public Lottery(int amount) {
-    // TODO
     this.values = new ArrayList<Lotto>();
+    for (int i = 0; i < amount; i++) {
+      this.values.add(Lotto.rand());
+    }
   }
 
   public void add(Lotto lotto) {
-    // TODO
-    // need validation? how about `set` rather than `list`?
     this.values.add(lotto);
   }
 
@@ -23,7 +23,6 @@ public class Lottery {
 
   @Override
   public String toString() {
-    // TODO
-    return "lottery";
+    return this.values.stream().map(Lotto::toString).reduce("", (ret, el) -> ret + "\n" + el);
   }
 }

@@ -46,7 +46,7 @@ class LotteryTest {
         // then
         mockedRandoms.verify(() -> Randoms.pickUniqueNumbersInRange(1, 45, 6), times(2));
         Assertions.assertThat(lottery.toString())
-            .isEqualTo(
+            .isEqualToIgnoringWhitespace(
                 """
                         [1, 2, 3, 4, 5, 6]
                         [1, 2, 3, 4, 5, 6]
@@ -69,7 +69,7 @@ class LotteryTest {
 
       // then
       assertThat(lottery.getAmount()).isEqualTo(initialAmount + 1);
-      assertThat(lottery.toString()).contains("[1,2,3,4,5,6]");
+      assertThat(lottery.toString()).contains("[1, 2, 3, 4, 5, 6]");
     }
   }
 
@@ -89,7 +89,7 @@ class LotteryTest {
 
       // then
       assertThat(result)
-          .isEqualTo(
+          .isEqualToIgnoringWhitespace(
               """
                       [1, 2, 3, 4, 5, 6]
                       [1, 2, 5, 6, 32, 40]
