@@ -1,11 +1,11 @@
 package lotto.domain;
 
 public class Payment {
+  private final Money amount;
   private final Lottery lottery;
 
   public Payment(Money amount) {
-    // TODO
-    // need validation
+    this.amount = amount;
     this.lottery = new Lottery(amount.divide(Lotto.PRICE));
   }
 
@@ -15,7 +15,8 @@ public class Payment {
 
   @Override
   public String toString() {
-    // TODO
-    return "payment";
+    int numBought = this.amount.divide(Lotto.PRICE);
+    String header = String.format("%d개를 구매했습니다.", numBought);
+    return header + "\n" + this.lottery.toString();
   }
 }
