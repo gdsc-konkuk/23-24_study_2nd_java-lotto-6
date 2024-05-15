@@ -12,6 +12,9 @@ public class Draw {
   private final List<Integer> winningNumbers;
   private final List<Integer> bonusNumbers;
 
+  // TODO
+  // 보너스 번호랑 당첨 번호가 겹치면 안 됨....ㅋㅋ
+
   public static Draw fromUser() {
     System.out.println("당첨 번호를 입력해 주세요.");
     String winningNumbersInput = Console.readLine();
