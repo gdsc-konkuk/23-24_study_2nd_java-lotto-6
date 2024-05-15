@@ -12,7 +12,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class MoneyTest {
   @Nested
   class parse {
-    @DisplayName("돈의 단위가 1,000원이 아니면 예외가 발생한다.")
+    @DisplayName("돈이 숫자가 아니라면 예외가 발생한다.")
     @ParameterizedTest
     @ValueSource(strings = {"test", "12.0", "555$"})
     void byNonInteger(String nonIntegerValue) {
@@ -45,7 +45,7 @@ class MoneyTest {
   class divide {
     @DisplayName("값을 나눌 수 있다.")
     @ParameterizedTest()
-    @CsvSource({"2000,500", "3000,600", "12000,1000"})
+    @CsvSource({"2000,1000", "3000,2000", "12000,4000"})
     void byValue(int left, int right) {
       // given
       Money money1 = new Money(left);
