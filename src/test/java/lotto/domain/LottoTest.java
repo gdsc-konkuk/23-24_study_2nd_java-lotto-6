@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import camp.nextstep.edu.missionutils.Randoms;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
@@ -7,12 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.times;
 
 class LottoTest {
   @Nested
@@ -60,6 +64,24 @@ class LottoTest {
 
       // then
       assertThat(lotto).isInstanceOf(Lotto.class);
+    }
+
+    @DisplayName("로또를 camp.nextstep.edu.missionutils.Randoms를 활용해서 랜덤하게 생성한다.")
+    @Test
+    void byPickUniqueNumbersInRange() {
+      try (MockedStatic<Randoms> mockedRandoms = Mockito.mockStatic(Randoms.class)) {
+        // given
+        mockedRandoms
+            .when(() -> Randoms.pickUniqueNumbersInRange(1, 45, 6))
+            .thenReturn(List.of(1, 2, 3, 4, 5, 6));
+
+        // when
+        Lotto lotto = Lotto.rand();
+
+        // then
+        mockedRandoms.verify(() -> Randoms.pickUniqueNumbersInRange(1, 45, 6), times(1));
+        assertThat(lotto.toString()).isEqualTo("[1, 2, 3, 4, 5, 6]");
+      }
     }
   }
 

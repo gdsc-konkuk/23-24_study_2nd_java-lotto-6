@@ -1,14 +1,19 @@
 package lotto.domain;
 
+import camp.nextstep.edu.missionutils.Randoms;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.times;
 
 class LotteryTest {
   @Nested
@@ -18,13 +23,35 @@ class LotteryTest {
     @ValueSource(ints = {3, 4, 10})
     void byAmount(int givenAmount) {
       // given
-      Lottery lottery = new Lottery(givenAmount);
 
       // when
-      int actualAmount = lottery.getAmount();
+      Lottery lottery = new Lottery(givenAmount);
 
       // then
-      assertThat(actualAmount).isEqualTo(givenAmount);
+      assertThat(lottery.getAmount()).isEqualTo(givenAmount);
+    }
+
+    @DisplayName("camp.nextstep.edu.missionutils.Randoms를 활용해서 지정한 만큼 무작위 로또를 생성한다.")
+    @Test
+    void byAmountAndPickUniqueNumbersInRange() {
+      try (MockedStatic<Randoms> mockedRandoms = Mockito.mockStatic(Randoms.class)) {
+        // given
+        mockedRandoms
+            .when(() -> Randoms.pickUniqueNumbersInRange(1, 45, 6))
+            .thenReturn(List.of(1, 2, 3, 4, 5, 6));
+
+        // when
+        Lottery lottery = new Lottery(2);
+
+        // then
+        mockedRandoms.verify(() -> Randoms.pickUniqueNumbersInRange(1, 45, 6), times(2));
+        Assertions.assertThat(lottery.toString())
+            .isEqualTo(
+                """
+                        [1, 2, 3, 4, 5, 6]
+                        [1, 2, 3, 4, 5, 6]
+                        """);
+      }
     }
   }
 
@@ -38,10 +65,11 @@ class LotteryTest {
       Lottery lottery = new Lottery(initialAmount);
 
       // when
-      lottery.add(Lotto.rand());
+      lottery.add(new Lotto(List.of(1, 2, 3, 4, 5, 6)));
 
       // then
       assertThat(lottery.getAmount()).isEqualTo(initialAmount + 1);
+      assertThat(lottery.toString()).contains("[1,2,3,4,5,6]");
     }
   }
 
