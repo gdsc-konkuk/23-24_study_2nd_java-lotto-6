@@ -274,7 +274,7 @@ sequenceDiagram
                 end
 
                 WinningNumbers -->>- Draw: Integer
-                Draw ->>+ BonusNumber: compare(lotto: Lotto)
+                Draw ->>+ BonusNumber: belonged(lotto: Lotto)
                 BonusNumber ->>+ Lotto: has(number: Integer)
                 Lotto -->>- BonusNumber: Boolean
                 BonusNumber -->>- Draw: Boolean
@@ -375,7 +375,7 @@ classDiagram
         -number: Integer
         +fromUser() BonusNumber$
         +new(number: Integer) BonusNumber
-        +compare(lotto: Lotto) Boolean
+        +belonged(lotto: Lotto) Boolean
         +equals(number: Integer) Boolean
         -validate(number: Integer) void
     }
