@@ -1,5 +1,9 @@
 package lotto.domain;
 
+import camp.nextstep.edu.missionutils.Randoms;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Lotto {
@@ -11,25 +15,39 @@ public class Lotto {
   private final List<Integer> numbers;
 
   public static Lotto rand() {
-    // TODO
-    return new Lotto(List.of(1, 2, 3, 4, 5, 6));
+    return new Lotto(Randoms.pickUniqueNumbersInRange(Lotto.NUM_LOWER, Lotto.NUM_UPPER, Lotto.LEN));
   }
 
   public Lotto(List<Integer> numbers) {
-    validate(numbers);
-    this.numbers = numbers;
+    // make sure the numbers can be sorted.
+    List<Integer> mutable = new ArrayList<>(numbers);
+    Collections.sort(mutable);
+
+    validate(mutable);
+    this.numbers = mutable;
   }
 
   private void validate(List<Integer> numbers) {
-    // TODO
     if (numbers.size() != Lotto.LEN) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("[ERROR] 로또 번호는 6개의 숫자로 이뤄져야 합니다.");
+    }
+
+    for (Integer num : numbers) {
+      if (num < Lotto.NUM_LOWER || num > Lotto.NUM_UPPER) {
+        throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+      }
+    }
+
+    Collections.sort(numbers);
+    for (int i = 0; i < numbers.size() - 1; i++) {
+      if (numbers.get(i).equals(numbers.get(i + 1))) {
+        throw new IllegalArgumentException("[ERROR] 로또 번호는 중복이 없어야 합니다.");
+      }
     }
   }
 
   @Override
   public String toString() {
-    // TODO
-    return "lotto";
+    return this.numbers.toString();
   }
 }
