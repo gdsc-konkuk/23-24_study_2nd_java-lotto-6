@@ -178,16 +178,15 @@ sequenceDiagram
     actor User
     box System
         participant Application
-        participant Draw
         participant WinningNumbers
         participant BonusNumber
+        participant Draw
         participant Lotto
     end
 
     User ->>+ Application: Draw
     rect rgb(0, 200, 200, 0.2)
-        Application ->>+ Draw: Draw.fromUser()
-        Draw ->>+ WinningNumbers: WinningNumbers.fromUser()
+        Application ->>+ WinningNumbers: WinningNumbers.fromUser()
 
         loop until get proper input
             rect rgb(200, 0, 0, 0.2)
@@ -195,6 +194,7 @@ sequenceDiagram
                 User -->> WinningNumbers: String
                 Lotto -->> WinningNumbers: Lotto.NUM_LOWER
                 Lotto -->> WinningNumbers: Lotto.NUM_UPPER
+
                 alt If it can't be parsed as a list of integers
                     WinningNumbers -->> User: [ERROR] 당첨 번호는 숫자 배열이어야 합니다. ex) 1,2,3,4
                 else If out of range
@@ -208,11 +208,11 @@ sequenceDiagram
             end
         end
 
-        WinningNumbers -->>- Draw: WinningNumbers
+        WinningNumbers -->>- Application: WinningNumbers
 
         loop until get proper input
             rect rgb(200, 0, 0, 0.2)
-                Draw ->>+ BonusNumber: BonusNumber.fromUser()
+                Application ->>+ BonusNumber: BonusNumber.fromUser()
                 BonusNumber -->> User: 보너스 번호를 입력해 주세요.
                 User -->> BonusNumber: String
                 Lotto -->> BonusNumber: Lotto.NUM_LOWER
@@ -224,7 +224,8 @@ sequenceDiagram
                     BonusNumber -->> User: [ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.
                 end
 
-                BonusNumber -->>- Draw: BonusNumber
+                BonusNumber -->>- Application: BonusNumber
+                Application ->>+ Draw: new(winningNumbers: WinningNumbers, bonusNumber: BonusNumber)
                 Draw ->>+ WinningNumbers: overlap(bonusNumber: BonusNumber)
                 WinningNumbers ->>+ BonusNumber: equals(number: Integer)
                 BonusNumber -->>- WinningNumbers: Boolean
@@ -256,6 +257,7 @@ sequenceDiagram
         participant BonusNumber
         participant Lotto
         participant Money
+        participant Prize
     end
 
     User ->>+ Application: Show Result
@@ -312,9 +314,6 @@ sequenceDiagram
 ```mermaid
 classDiagram
     direction RL
-    Application --> Payment
-    Application --> Draw
-    Application --> Result
     Payment --* Lotto
     Draw --* WinningNumbers
     Draw --* BonusNumber
@@ -355,7 +354,6 @@ classDiagram
     }
 
     class Draw {
-        +fromUser() Draw$
         +new(winningNumbers: WinningNumbers, bonusNumber: BonusNumber) Draw$
         +compare(lotto: Lotto) Prize
         -validate(winningNumbers: WinningNumbers, bonusNumber: BonusNumber) void
