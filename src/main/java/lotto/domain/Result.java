@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Result {
@@ -29,12 +30,13 @@ public class Result {
               type, this.prizes.stream().filter(prize -> prize.equals(type)).count()));
     }
 
-    result.append(String.format("총 수익률은 %.2f%%입니다.\n", this.returnRate));
+    result.append(
+        String.format("총 수익률은 %s%%입니다.\n", new DecimalFormat("#.##").format(this.returnRate)));
 
     return result.toString();
   }
 
   private float calcReturnRate(List<Money> rewards, Money principalAmount) {
-    return Money.total(rewards).divide(principalAmount);
+    return Money.total(rewards).divide(principalAmount) * 100;
   }
 }

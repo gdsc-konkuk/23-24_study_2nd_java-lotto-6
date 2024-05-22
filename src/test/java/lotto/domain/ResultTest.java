@@ -50,7 +50,8 @@ class ResultTest {
           .extracting("returnRate")
           .isEqualTo(
               Money.total(mockedPrizes.stream().map(Prize::getReward).toList())
-                  .divide(mockedPrincipalAmount));
+                      .divide(mockedPrincipalAmount)
+                  * 100);
     }
   }
 
@@ -82,7 +83,7 @@ class ResultTest {
                         5개 일치 (1,500,000원) - 0개
                         5개 일치, 보너스 볼 일치 (30,000,000원) - 0개
                         6개 일치 (2,000,000,000원) - 1개
-                        총 수익률은 133340.33%입니다.
+                        총 수익률은 13334033%입니다.
                         """);
     }
   }
