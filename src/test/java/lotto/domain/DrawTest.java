@@ -38,4 +38,91 @@ class DrawTest {
           .isInstanceOf(IllegalArgumentException.class);
     }
   }
+
+  @Nested
+  class compare {
+    @DisplayName("1등상을 구별할 수 있다.")
+    @Test
+    void first() {
+      // given
+      Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+      Draw draw = new Draw(new WinningNumbers(List.of(1, 2, 3, 4, 5, 6)), new BonusNumber(7));
+
+      // when
+      Prize prize = draw.compare(lotto);
+
+      // then
+      assertThat(prize).isEqualTo(Prize.FIRST);
+    }
+
+    @DisplayName("2등상을 구별할 수 있다.")
+    @Test
+    void second() {
+      // given
+      Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 7));
+      Draw draw = new Draw(new WinningNumbers(List.of(1, 2, 3, 4, 5, 6)), new BonusNumber(7));
+
+      // when
+      Prize prize = draw.compare(lotto);
+
+      // then
+      assertThat(prize).isEqualTo(Prize.SECOND);
+    }
+
+    @DisplayName("3등상을 구별할 수 있다.")
+    @Test
+    void third() {
+      // given
+      Lotto lotto = new Lotto(List.of(1, 2, 33, 4, 5, 6));
+      Draw draw = new Draw(new WinningNumbers(List.of(1, 2, 3, 4, 5, 6)), new BonusNumber(7));
+
+      // when
+      Prize prize = draw.compare(lotto);
+
+      // then
+      assertThat(prize).isEqualTo(Prize.THIRD);
+    }
+
+    @DisplayName("4등상을 구별할 수 있다.")
+    @Test
+    void fourth() {
+      // given
+      Lotto lotto = new Lotto(List.of(1, 22, 23, 4, 5, 6));
+      Draw draw = new Draw(new WinningNumbers(List.of(1, 2, 3, 4, 5, 6)), new BonusNumber(7));
+
+      // when
+      Prize prize = draw.compare(lotto);
+
+      // then
+      assertThat(prize).isEqualTo(Prize.FOURTH);
+    }
+
+    @DisplayName("5등상을 구별할 수 있다.")
+    @Test
+    void fifth() {
+      // given
+      Lotto lotto = new Lotto(List.of(1, 22, 3, 34, 35, 6));
+      Draw draw = new Draw(new WinningNumbers(List.of(1, 2, 3, 4, 5, 6)), new BonusNumber(7));
+
+      // when
+      Prize prize = draw.compare(lotto);
+
+      // then
+      assertThat(prize).isEqualTo(Prize.FIFTH);
+    }
+
+    @DisplayName("당첨되지 않은 경우를 구별할 수 있다.")
+    @Test
+    void byLotto() {
+      // given
+      Lotto lotto = new Lotto(List.of(11, 12, 13, 14, 5, 6));
+      Draw draw = new Draw(new WinningNumbers(List.of(1, 2, 3, 4, 5, 6)), new BonusNumber(7));
+
+      // when
+      Prize prize = draw.compare(lotto);
+
+      // then
+      assertThat(prize).isEqualTo(Prize.NOT_WIN);
+    }
+  }
 }

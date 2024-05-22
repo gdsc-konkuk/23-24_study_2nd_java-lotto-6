@@ -15,10 +15,18 @@ public class Payment {
   public Payment(Money amount) {
     validate(amount);
     this.amount = amount;
-    this.numBought = amount.divide(Lotto.PRICE);
+    this.numBought = (int) amount.divide(Lotto.PRICE);
 
     this.lottery = new ArrayList<>();
     issueLottery(this.numBought);
+  }
+
+  public Money getAmount() {
+    return this.amount;
+  }
+
+  public List<Prize> getPrizes(Draw draw) {
+    return this.lottery.stream().map(draw::compare).toList();
   }
 
   @Override

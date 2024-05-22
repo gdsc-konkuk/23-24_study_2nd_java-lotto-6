@@ -144,10 +144,10 @@ class MoneyTest {
       Money money2 = new Money(right);
 
       // when
-      int result = money1.divide(money2);
+      float result = money1.divide(money2);
 
       // then
-      assertThat(result).isEqualTo(left / right);
+      assertThat(result).isEqualTo((float) left / right);
     }
   }
 

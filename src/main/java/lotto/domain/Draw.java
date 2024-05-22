@@ -11,6 +11,12 @@ public class Draw {
     this.bonusNumber = bonusNumber;
   }
 
+  public Prize compare(Lotto lotto) {
+    int winningCount = this.winningNumbers.compare(lotto);
+    boolean hitBonus = this.bonusNumber.belonged(lotto);
+    return Prize.from(winningCount, hitBonus);
+  }
+
   private void validate(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
     if (winningNumbers.overlap(bonusNumber)) {
       throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 겹치지 않아야 합니다.");

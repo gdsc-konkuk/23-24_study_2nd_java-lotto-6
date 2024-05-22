@@ -96,7 +96,13 @@ classDiagram
         +THIRD$
         +FOURTH$
         +FIFTH$
+        +NOT_WIN$
         -reward: Money
+    }
+
+    class Result {
+        -prizes: Prize[]
+        -returnRate: Float
     }
 ```
 
@@ -143,7 +149,7 @@ sequenceDiagram
 
         Lotto -->> Payment: Lotto.PRICE
         Payment ->>+ Money: divide(other: Money)
-        Money -->>- Payment: Integer
+        Money -->>- Payment: Float
 
         loop num bought
             rect rgb(200, 0, 000, 0.2)
@@ -285,24 +291,30 @@ sequenceDiagram
         end
 
         Payment -->>- Result: Prize[]
-        Result -->>- Application: Result
-    end
-
-    rect rgb(0, 200, 200, 0.2)
-        Application ->>+ Result: toString()
-
+        Result ->>+ Payment: getAmount()
+        Payment -->>- Result: Money
         rect rgb(200, 0, 0, 0.2)
             loop prizes
                 Result ->>+ Prize: getReward()
                 Prize -->>- Result: Money
             end
         end
+
         Result ->>+ Money: Money.total(sources: Money[])
         Money -->>- Result: Money
-        Result ->>+ Payment: getAmount()
-        Payment -->>- Result: Money
         Result ->>+ Money: divide(other: Money)
-        Money -->>- Result: Money
+        Money -->>- Result: Float
+        Result -->>- Application: Result
+    end
+
+    rect rgb(0, 200, 200, 0.2)
+        Application ->>+ Result: toString()
+        rect rgb(200, 0, 0, 0.2)
+            loop Prize.values
+                Result ->>+ Prize: toString()
+                Prize -->>- Result: String
+            end
+        end
         Result -->>- Application: String
     end
 
@@ -325,7 +337,7 @@ classDiagram
         +fromUser() Money$
         +total(sources: Money[]) Money$
         +new(value: Integer) Money$
-        +divide(other: Money) Integer
+        +divide(other: Money) Float
         +gte(other: Money) Boolean
         -validate(value: Integer) void
     }
@@ -335,6 +347,7 @@ classDiagram
         -amount: Money
         -numBought: Integer
         +new(amount: Money) Payment$
+        +getAmount() Money
         +getPrizes(draw: Draw) Prize[]
         +toString() String
         -validate(amount: Money) void
@@ -385,14 +398,19 @@ classDiagram
         +THIRD$
         +FOURTH$
         +FIFTH$
+        +NOT_WIN$
         -reward: Money
+        +from(winningCount: Integer, hitBonus: Boolean) Prize$
+        +new(reward: Integer) Prize$
         +getReward() Money
+        +toString() String
     }
 
     class Result {
+        -prizes: Prize[]
+        -returnRate: Float
         +new(draw: Draw, payment: Payment) Result$
         +toString() String
-        -validate(draw: Draw, payment: Payment) void
-        -calcReturnRate(rewards: Money[], principal: Money) Float
+        -calcReturnRate(rewards: Money[], principalAmount: Money) Float
     }
 ```

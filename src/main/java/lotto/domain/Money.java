@@ -27,8 +27,8 @@ public class Money {
     this.value = value;
   }
 
-  public int divide(Money other) {
-    return this.value / other.value;
+  public float divide(Money other) {
+    return (float) this.value / other.value;
   }
 
   public boolean gte(Money other) {
