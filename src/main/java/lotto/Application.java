@@ -29,7 +29,7 @@ public class Application {
     while (true) {
       try {
         return func.get();
-      } catch (Exception ex) {
+      } catch (IllegalArgumentException ex) {
         System.out.println(ex.getMessage());
       }
     }
