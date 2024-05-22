@@ -14,13 +14,16 @@ public class Application {
     Money principalAmount = tillSuccess(Money::fromUser);
     Payment payment = tillSuccess(() -> new Payment(principalAmount));
     System.out.println();
+
     System.out.println(payment);
     System.out.println();
 
     WinningNumbers winningNumbers = tillSuccess(WinningNumbers::fromUser);
     System.out.println();
+
     Draw draw = tillSuccess(() -> new Draw(winningNumbers, BonusNumber.fromUser()));
     System.out.println();
+
     Result result = new Result(draw, payment);
     System.out.println(result);
   }
