@@ -164,7 +164,7 @@ class MoneyTest {
       boolean result = greater.gte(less);
 
       // then
-      assertThat(result).isFalse();
+      assertThat(result).isTrue();
     }
 
     @DisplayName("더 큰 돈과 비교하면 `true`를 반환한다.")
@@ -178,7 +178,7 @@ class MoneyTest {
       boolean result = less.gte(greater);
 
       // then
-      assertThat(result).isTrue();
+      assertThat(result).isFalse();
     }
 
     @DisplayName("같은 돈과 비교하면 `true`를 반환한다.")
