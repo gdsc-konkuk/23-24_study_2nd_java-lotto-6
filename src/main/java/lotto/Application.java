@@ -11,8 +11,7 @@ import java.util.function.Supplier;
 
 public class Application {
   public static void main(String[] args) {
-    Money principalAmount = tillSuccess(Money::fromUser);
-    Payment payment = tillSuccess(() -> new Payment(principalAmount));
+    Payment payment = tillSuccess(() -> new Payment(Money.fromUser()));
     System.out.println();
 
     System.out.println(payment);
